@@ -10,11 +10,11 @@ import UIKit
 final class CLToastView: UIView {
   private let iconImageView = UIImageView()
   private let toastMessageLabel = UILabel()
-  private let padding: CGFloat = 20
+  private var padding: CGFloat = 20
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-    configToastLayer()
+    configToastViewLayer()
     configIconImageView()
     configToastMessageLabel()
   }
@@ -23,16 +23,23 @@ final class CLToastView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
   
-  public func set(icon: UIImage, message: String) {
+  public func set(
+    icon: UIImage,
+    message: String,
+    padding: CGFloat = 20
+  ) {
     iconImageView.image = icon
     toastMessageLabel.text = message
+    self.padding = padding
   }
 }
 
+// MARK: - Rendering
 extension CLToastView {
-  private func configToastLayer() {
+  private func configToastViewLayer() {
     layer.cornerRadius = 20
     layer.opacity = 0.0
+    
     if #available(iOS 13.0, *) {
       backgroundColor = .secondarySystemBackground
     } else {
@@ -43,13 +50,11 @@ extension CLToastView {
   private func configIconImageView() {
     addSubview(iconImageView)
     iconImageView.translatesAutoresizingMaskIntoConstraints = false
+    iconImageView.render()
     
     NSLayoutConstraint.activate([
       iconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
-      iconImageView.topAnchor.constraint(equalTo: topAnchor, constant: padding),
       iconImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-      iconImageView.widthAnchor.constraint(equalToConstant: 16),
-      iconImageView.heightAnchor.constraint(equalTo: iconImageView.widthAnchor),
     ])
   }
   
@@ -57,6 +62,7 @@ extension CLToastView {
     addSubview(toastMessageLabel)
     toastMessageLabel.translatesAutoresizingMaskIntoConstraints = false
     toastMessageLabel.numberOfLines = 1
+    toastMessageLabel.textAlignment = .left
     
     NSLayoutConstraint.activate([
       toastMessageLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 12),
@@ -64,5 +70,4 @@ extension CLToastView {
       toastMessageLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
     ])
   }
-  
 }

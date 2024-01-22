@@ -1,7 +1,7 @@
 import UIKit
 
 @available(iOS 13.0, *)
-final class CLToastPresenter<PresentMode> {
+public final class CLToast<PresentMode> {
   private var toastInfo: ToastInfo!
   private lazy var toastVC: CLToastVC? = {
     let vc = CLToastVC(icon: toastInfo.icon, message: toastInfo.message)
@@ -10,10 +10,6 @@ final class CLToastPresenter<PresentMode> {
   
   public init(_ toastInfo: ToastInfo) {
     self.toastInfo = toastInfo
-  }
-  
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
   }
   
   public func configAnimation() {
@@ -26,8 +22,8 @@ final class CLToastPresenter<PresentMode> {
 }
 
 @available(iOS 13.0, *)
-extension CLToastPresenter where PresentMode == OverViewController {
-  func present(
+extension CLToast where PresentMode == OverViewController {
+  public func present(
     with info: ToastInfo,
     in vc: UIViewController
   ) {
@@ -42,8 +38,8 @@ extension CLToastPresenter where PresentMode == OverViewController {
 }
 
 @available(iOS 13.0, *)
-extension CLToastPresenter where PresentMode == OverNavigationController {
-  func present(
+extension CLToast where PresentMode == OverNavigationController {
+  public func present(
     with info: ToastInfo,
     in vc: UIViewController
   ) {
