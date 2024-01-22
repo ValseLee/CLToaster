@@ -3,16 +3,16 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		7ED00ADC2B5E8692006D48D7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED00ADB2B5E8692006D48D7 /* AppDelegate.swift */; };
 		7ED00ADE2B5E8692006D48D7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED00ADD2B5E8692006D48D7 /* SceneDelegate.swift */; };
 		7ED00AE02B5E8692006D48D7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED00ADF2B5E8692006D48D7 /* ViewController.swift */; };
-		7ED00AE32B5E8692006D48D7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7ED00AE12B5E8692006D48D7 /* Main.storyboard */; };
 		7ED00AE52B5E8692006D48D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7ED00AE42B5E8692006D48D7 /* Assets.xcassets */; };
 		7ED00AE82B5E8692006D48D7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7ED00AE62B5E8692006D48D7 /* LaunchScreen.storyboard */; };
+		7ED00AF42B5E86E0006D48D7 /* CLToast in Frameworks */ = {isa = PBXBuildFile; productRef = 7ED00AF32B5E86E0006D48D7 /* CLToast */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,7 +20,6 @@
 		7ED00ADB2B5E8692006D48D7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7ED00ADD2B5E8692006D48D7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		7ED00ADF2B5E8692006D48D7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		7ED00AE22B5E8692006D48D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7ED00AE42B5E8692006D48D7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7ED00AE72B5E8692006D48D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7ED00AE92B5E8692006D48D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -31,6 +30,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7ED00AF42B5E86E0006D48D7 /* CLToast in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,13 +58,20 @@
 			children = (
 				7ED00ADB2B5E8692006D48D7 /* AppDelegate.swift */,
 				7ED00ADD2B5E8692006D48D7 /* SceneDelegate.swift */,
-				7ED00ADF2B5E8692006D48D7 /* ViewController.swift */,
-				7ED00AE12B5E8692006D48D7 /* Main.storyboard */,
+				7ED00AF62B5E872C006D48D7 /* VC */,
 				7ED00AE42B5E8692006D48D7 /* Assets.xcassets */,
 				7ED00AE62B5E8692006D48D7 /* LaunchScreen.storyboard */,
 				7ED00AE92B5E8692006D48D7 /* Info.plist */,
 			);
 			path = Demo;
+			sourceTree = "<group>";
+		};
+		7ED00AF62B5E872C006D48D7 /* VC */ = {
+			isa = PBXGroup;
+			children = (
+				7ED00ADF2B5E8692006D48D7 /* ViewController.swift */,
+			);
+			path = VC;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -83,6 +90,9 @@
 			dependencies = (
 			);
 			name = Demo;
+			packageProductDependencies = (
+				7ED00AF32B5E86E0006D48D7 /* CLToast */,
+			);
 			productName = Demo;
 			productReference = 7ED00AD82B5E8691006D48D7 /* Demo.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +121,9 @@
 				Base,
 			);
 			mainGroup = 7ED00ACF2B5E8691006D48D7;
+			packageReferences = (
+				7ED00AF22B5E86E0006D48D7 /* XCLocalSwiftPackageReference "../CLToast" */,
+			);
 			productRefGroup = 7ED00AD92B5E8691006D48D7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -127,7 +140,6 @@
 			files = (
 				7ED00AE82B5E8692006D48D7 /* LaunchScreen.storyboard in Resources */,
 				7ED00AE52B5E8692006D48D7 /* Assets.xcassets in Resources */,
-				7ED00AE32B5E8692006D48D7 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,14 +159,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		7ED00AE12B5E8692006D48D7 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				7ED00AE22B5E8692006D48D7 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		7ED00AE62B5E8692006D48D7 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -297,7 +301,6 @@
 				INFOPLIST_FILE = Demo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -325,7 +328,6 @@
 				INFOPLIST_FILE = Demo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -363,6 +365,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		7ED00AF22B5E86E0006D48D7 /* XCLocalSwiftPackageReference "../CLToast" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../CLToast;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7ED00AF32B5E86E0006D48D7 /* CLToast */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CLToast;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 7ED00AD02B5E8691006D48D7 /* Project object */;
 }
