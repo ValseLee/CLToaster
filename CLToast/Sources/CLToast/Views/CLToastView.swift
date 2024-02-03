@@ -8,9 +8,8 @@
 import UIKit
 
 final class CLToastView: UIView {
-  private let iconImageView = UIImageView()
-  private let toastMessageLabel = UILabel()
-  private var padding: CGFloat = 20
+  internal var iconImageView = CLToastIconView()
+  internal var toastMessageLabel = CLToastMessageLabel()
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -25,12 +24,10 @@ final class CLToastView: UIView {
   
   public func set(
     icon: UIImage,
-    message: String,
-    padding: CGFloat = 20
+    message: String
   ) {
     iconImageView.image = icon
     toastMessageLabel.text = message
-    self.padding = padding
   }
 }
 
@@ -49,24 +46,20 @@ extension CLToastView {
   
   private func configIconImageView() {
     addSubview(iconImageView)
-    iconImageView.translatesAutoresizingMaskIntoConstraints = false
-    iconImageView.render()
+    iconImageView.render(with: .IconSizes.default)
     
     NSLayoutConstraint.activate([
-      iconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
+      iconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: CGFloat.Padding.default),
       iconImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
     ])
   }
   
   private func configToastMessageLabel() {
     addSubview(toastMessageLabel)
-    toastMessageLabel.translatesAutoresizingMaskIntoConstraints = false
-    toastMessageLabel.numberOfLines = 1
-    toastMessageLabel.textAlignment = .left
-    
+
     NSLayoutConstraint.activate([
       toastMessageLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 12),
-      toastMessageLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
+      toastMessageLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -CGFloat.Padding.default),
       toastMessageLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
     ])
   }
