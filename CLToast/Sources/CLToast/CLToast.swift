@@ -1,58 +1,64 @@
 import UIKit
 
-@available(iOS 13.0, *)
-public final class CLToast<PresentMode> {
-  private var toastInfo: ToastInfo!
-  private lazy var toastVC: CLToastVC? = {
-    let vc = CLToastVC(icon: toastInfo.icon, message: toastInfo.message)
-    return vc
-  }()
-  
-  public init(_ toastInfo: ToastInfo) {
-    self.toastInfo = toastInfo
-  }
-  
-  public func configAnimation() {
-    // TODO: - Animation 설정 변경
-  }
-  
-  public func configLayout() {
-    // TODO: - Top? Bottom?
-  }
-}
+public protocol CLToastPresentStyle { }
+public enum OverViewController: CLToastPresentStyle { }
+public enum OverNavigationBar: CLToastPresentStyle { }
 
-@available(iOS 13.0, *)
-extension CLToast where PresentMode == OverViewController {
-  public func present(
-    with info: ToastInfo,
-    in vc: UIViewController
-  ) {
-    guard let toastVC else { return }
-    Task { @MainActor in
-      vc.addChild(toastVC)
-      vc.view.addSubview(toastVC.view)
-      toastVC.didMove(toParent: vc)
-      toastVC.view.frame = vc.view.bounds
+public struct CLToast<Present: CLToastPresentStyle> {
+  private var toastPresentable: CLToastPresentable
+  
+  private func removeToastPresentable(isAnimated: Bool) {
+    if isAnimated,
+       toastPresentable.parent != nil {
+      toastPresentable.removeFromParent()
+      toastPresentable.view.removeFromSuperview()
+      toastPresentable.dismiss(animated: true, completion: toastPresentable.onDismiss)
     }
   }
 }
 
-@available(iOS 13.0, *)
-extension CLToast where PresentMode == OverNavigationController {
+extension CLToast where Present == OverViewController {
   public func present(
-    with info: ToastInfo,
+    in vc: UIViewController,
+    onDismiss: (() -> Void)? = { }
+  ) {
+    if let onDismiss { toastPresentable.onDismiss = onDismiss }
+    present(in: vc)
+  }
+  
+  public func present(in vc: UIViewController) {
+    Task { @MainActor [weak vc] in
+      guard let vc else { return }
+      vc.addChild(toastPresentable)
+      vc.view.addSubview(toastPresentable.view)
+      toastPresentable.didMove(toParent: vc)
+      toastPresentable.view.frame = vc.view.bounds
+    }
+  }
+}
+
+extension CLToast where Present == OverNavigationBar {
+  public func present(
+    in vc: UIViewController,
+    onDismiss: (() -> Void)? = { }
+  ) {
+    if let onDismiss { toastPresentable.onDismiss = onDismiss }
+    present(in: vc)
+  }
+  
+  public func present(
     in vc: UIViewController
   ) {
-    Task { @MainActor in
+    Task { @MainActor [weak vc] in
       guard
-        let navigationController = vc.navigationController,
-        let toastVC else { return }
-      navigationController.addChild(toastVC)
-      navigationController.navigationBar.addSubview(toastVC.view)
+        let vc,
+        let navigationController = vc.navigationController else { return }
+      navigationController.addChild(toastPresentable)
+      navigationController.navigationBar.addSubview(toastPresentable.view)
       navigationController.beginAppearanceTransition(true, animated: true)
       navigationController.endAppearanceTransition()
-      toastVC.didMove(toParent: navigationController)
-      toastVC.view.frame = navigationController.navigationBar.bounds
+      toastPresentable.didMove(toParent: navigationController)
+      toastPresentable.view.frame = navigationController.navigationBar.bounds
     }
   }
 }
