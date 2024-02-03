@@ -16,11 +16,7 @@ final class CLToastDemoVC: UIViewController {
   }
 
   private func presentToast() {
-    let toastManager = CLToast<OverViewController>(
-      with: CLToastInfo(icon: .checkmark, message: "Hi")
-    )
-    
-    toastManager.present(in: self)
+    // Present Toast
   }
 }
 
