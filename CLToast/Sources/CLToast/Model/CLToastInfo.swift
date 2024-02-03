@@ -7,15 +7,18 @@
 
 import UIKit
 
-public enum OverViewController { }
-public enum OverNavigationController { }
-
-public struct ToastInfo {
+public struct CLToastInfo {
   let icon: UIImage
   let message: String
+  let padding: CGFloat
   
-  public init(icon: UIImage, message: String) {
+  public init(
+    icon: UIImage,
+    message: String,
+    padding: CGFloat = 20
+  ) {
     self.icon = icon
     self.message = message
+    self.padding = padding
   }
 }
