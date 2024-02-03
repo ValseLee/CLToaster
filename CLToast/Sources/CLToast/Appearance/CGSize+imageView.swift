@@ -17,7 +17,7 @@ extension UIImageView {
 }
 
 extension CGSize {
-  public struct IconSizes {
+  public enum IconSizes {
     public static var `default` = CGSize(width: 16, height: 16)
     /// 20 x 20
     public static var small = CGSize(width: 20, height: 20)

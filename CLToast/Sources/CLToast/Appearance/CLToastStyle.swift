@@ -7,8 +7,8 @@
 
 import UIKit
 
-enum ToastStyle {
-  case `default`
+enum CLToastStyle {
+  case navigationBar
   case bottom
   case custom(customView: UIView)
 }
