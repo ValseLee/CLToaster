@@ -9,30 +9,44 @@ import UIKit
 
 final class CLToastDefaultVC: UIViewController, CLToastPresentable {
   var animationDelegate: (CLToastAnimatable)?
-  var toastView: UIView = CLToastView()
   var onDismiss: (() -> Void)?
+  var toastView: UIView = {
+    let toast = CLToastView()
+    toast.set(icon: .actions, message: "Hi")
+    return toast
+  }()
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    animationDelegate?.animate(for: toastView, completion: removeVC(isAnimated:))
+    configToastView()
   }
   
-  internal func present(in parent: UIViewController) {
-    Task { @MainActor [weak parent, weak self] in
-      guard let self, let parent else { return }
-      parent.addChild(self)
-      parent.view.addSubview(toastView)
-      didMove(toParent: parent)
-      toastView.frame = parent.view.bounds
-    }
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    animationDelegate?.animate(
+      for: toastView,
+      completion: removeVC(isAnimated:)
+    )
+  }
+  
+  internal func configToastView() {
+    view.addSubview(toastView)
+    toastView.backgroundColor = .red
+    toastView.translatesAutoresizingMaskIntoConstraints = false
+    
+    NSLayoutConstraint.activate([
+      toastView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
+      toastView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+      toastView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+      toastView.heightAnchor.constraint(equalToConstant: 70)
+    ])
   }
   
   private func removeVC(isAnimated: Bool) {
-    if isAnimated,
-       self.parent != nil {
-      self.removeFromParent()
-      self.view.removeFromSuperview()
-      self.dismiss(animated: true, completion: onDismiss)
+    if isAnimated {
+      removeFromParent()
+      view.removeFromSuperview()
+      dismiss(animated: true, completion: onDismiss)
     }
   }
 }
