@@ -5,31 +5,31 @@
 //  Created by Celan on 2/5/24.
 //
 
-import Foundation
+import UIKit
 
 public struct CLToastViewBuilder {
-  func makeIconView(with image: UIImage) -> UIView {
-    let view = UIView()
-    
-    return UIView()
+  func makeIconView(
+    config makeView: @escaping () -> UIImageView?
+  ) -> UIImageView? {
+    makeView()
   }
   
-  func makeTitleLabelView(
-    with text: String,
-    config: @escaping (UILabel) -> Void
-  ) -> UILabel {
-    let titleLabel = UILabel()
-    config(titleLabel)
-    
-    return titleLabel
+  func makeTitleLabel(
+    config makeView: @escaping () -> UILabel?
+  ) -> UILabel? {
+    makeView()
   }
   
-  func makeDescriptionView() -> UILabel {
-    return UILabel()
+  func makeDescriptionLabel(
+    config makeView: @escaping () -> UILabel?
+  ) -> UILabel? {
+    makeView()
   }
   
-  func makeTimeLabel() -> UILabel {
-    return UILabel()
+  func makeToastTimeLabel(
+    config makeView: @escaping () -> UILabel?
+  ) -> UILabel? {
+    makeView()
   }
   
   func makeToastView() -> UIView {
