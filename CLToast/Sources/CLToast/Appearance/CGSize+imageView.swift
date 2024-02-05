@@ -7,15 +7,6 @@
 
 import UIKit
 
-extension UIImageView {
-  public func render(with size: CGSize) {
-    NSLayoutConstraint.activate([
-      self.widthAnchor.constraint(equalToConstant: size.width),
-      self.heightAnchor.constraint(equalToConstant: size.height),
-    ])
-  }
-}
-
 extension CGSize {
   public enum IconSizes {
     public static var `default` = CGSize(width: 16, height: 16)

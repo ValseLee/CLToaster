@@ -36,12 +36,6 @@ extension CLToastView {
   private func configToastViewLayer() {
     layer.cornerRadius = 20
     layer.opacity = 0.0
-    
-    if #available(iOS 13.0, *) {
-      backgroundColor = .secondarySystemBackground
-    } else {
-      backgroundColor = .gray
-    }
   }
   
   private func configIconImageView() {
