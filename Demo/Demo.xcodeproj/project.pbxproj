@@ -7,15 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7E96D21A2B6F181900ABA4E8 /* CLToast in Frameworks */ = {isa = PBXBuildFile; productRef = 7E96D2192B6F181900ABA4E8 /* CLToast */; };
+		7E96D21C2B6F183C00ABA4E8 /* CLToastController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E96D21B2B6F183C00ABA4E8 /* CLToastController.swift */; };
 		7ED00ADC2B5E8692006D48D7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED00ADB2B5E8692006D48D7 /* AppDelegate.swift */; };
 		7ED00ADE2B5E8692006D48D7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED00ADD2B5E8692006D48D7 /* SceneDelegate.swift */; };
 		7ED00AE02B5E8692006D48D7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED00ADF2B5E8692006D48D7 /* ViewController.swift */; };
 		7ED00AE52B5E8692006D48D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7ED00AE42B5E8692006D48D7 /* Assets.xcassets */; };
 		7ED00AE82B5E8692006D48D7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7ED00AE62B5E8692006D48D7 /* LaunchScreen.storyboard */; };
-		7ED00AF42B5E86E0006D48D7 /* CLToast in Frameworks */ = {isa = PBXBuildFile; productRef = 7ED00AF32B5E86E0006D48D7 /* CLToast */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7E96D21B2B6F183C00ABA4E8 /* CLToastController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLToastController.swift; sourceTree = "<group>"; };
 		7ED00AD82B5E8691006D48D7 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7ED00ADB2B5E8692006D48D7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7ED00ADD2B5E8692006D48D7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -30,7 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7ED00AF42B5E86E0006D48D7 /* CLToast in Frameworks */,
+				7E96D21A2B6F181900ABA4E8 /* CLToast in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,6 +72,7 @@
 			isa = PBXGroup;
 			children = (
 				7ED00ADF2B5E8692006D48D7 /* ViewController.swift */,
+				7E96D21B2B6F183C00ABA4E8 /* CLToastController.swift */,
 			);
 			path = VC;
 			sourceTree = "<group>";
@@ -91,7 +94,7 @@
 			);
 			name = Demo;
 			packageProductDependencies = (
-				7ED00AF32B5E86E0006D48D7 /* CLToast */,
+				7E96D2192B6F181900ABA4E8 /* CLToast */,
 			);
 			productName = Demo;
 			productReference = 7ED00AD82B5E8691006D48D7 /* Demo.app */;
@@ -122,7 +125,7 @@
 			);
 			mainGroup = 7ED00ACF2B5E8691006D48D7;
 			packageReferences = (
-				7ED00AF22B5E86E0006D48D7 /* XCLocalSwiftPackageReference "../CLToast" */,
+				7E96D2182B6F181900ABA4E8 /* XCLocalSwiftPackageReference "../CLToast" */,
 			);
 			productRefGroup = 7ED00AD92B5E8691006D48D7 /* Products */;
 			projectDirPath = "";
@@ -150,6 +153,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E96D21C2B6F183C00ABA4E8 /* CLToastController.swift in Sources */,
 				7ED00AE02B5E8692006D48D7 /* ViewController.swift in Sources */,
 				7ED00ADC2B5E8692006D48D7 /* AppDelegate.swift in Sources */,
 				7ED00ADE2B5E8692006D48D7 /* SceneDelegate.swift in Sources */,
@@ -367,14 +371,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		7ED00AF22B5E86E0006D48D7 /* XCLocalSwiftPackageReference "../CLToast" */ = {
+		7E96D2182B6F181900ABA4E8 /* XCLocalSwiftPackageReference "../CLToast" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../CLToast;
 		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		7ED00AF32B5E86E0006D48D7 /* CLToast */ = {
+		7E96D2192B6F181900ABA4E8 /* CLToast */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CLToast;
 		};
