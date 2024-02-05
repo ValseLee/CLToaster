@@ -18,16 +18,13 @@ public protocol CLToastAnimatable {
 }
 
 public struct CLToastAnimateClient: CLToastAnimatable {
-  
   /// 애니메이션을 시동합니다.
   /// - Parameters:
   ///   - view: 애니메이션을 동작할 Toast Message View를 전달합니다.
   ///   - completion: 애니메이션이 완전히 종료된 후 호출할 메소드를 전달합니다.
   public func animate(for view: UIView, completion: @escaping (Bool) -> Void) {
-    appearingAnimate(for: view) { [weak view] isAniamted in
-      guard let view else { return }
-      disappearingAnimate(for: view) { [weak view] isAnimated in
-        guard let view else { return }
+    appearingAnimate(for: view) { isAniamted in
+      disappearingAnimate(for: view) { isAnimated in
         completion(isAniamted)
       }
     }
@@ -37,8 +34,11 @@ public struct CLToastAnimateClient: CLToastAnimatable {
     for toastView: UIView,
     didAppear: @escaping (Bool) -> Void
   ) {
-    UIView.animate(withDuration: 0.35, delay: 0.0, options: .curveEaseOut) { [weak toastView] in
-      guard let toastView else { return }
+    UIView.animate(
+      withDuration: 0.35,
+      delay: 0.0,
+      options: .curveEaseOut
+    ) {
       toastView.frame.origin.y += 40
       toastView.layer.opacity = 1.0
       
@@ -51,8 +51,11 @@ public struct CLToastAnimateClient: CLToastAnimatable {
     for toastView: UIView,
     didDisappear: @escaping (Bool) -> Void
   ) {
-    UIView.animate(withDuration: 0.35, delay: 0.0, options: .curveEaseOut) { [weak toastView] in
-      guard let toastView else { return }
+    UIView.animate(
+      withDuration: 0.35,
+      delay: 0.35,
+      options: .curveEaseOut
+    ) {
       toastView.frame.origin.y -= 40
       toastView.layer.opacity = 0.0
       
