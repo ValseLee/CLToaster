@@ -1,5 +1,5 @@
 //
-//  View.Layer.swift
+//  CLToastPresentable.swift
 //
 //
 //  Created by Celan on 1/22/24.
@@ -7,35 +7,12 @@
 
 import UIKit
 
-protocol CLToastPresentable: UIViewController {
-  var onDismiss: (() -> Void)? { get set }
-  var style: CLToastStyle? { get set }
-  func animate()
-  func dismissCLToast()
-}
-
-extension CLToastPresentable {
-  internal func animate() {
-    UIView.animate(withDuration: 0.35, delay: 0.0, options: .curveEaseOut) { [weak self] in
-      guard let self else { return }
-      if let toastView = self.view.subviews.first {
-        toastView.frame.origin.y += 40
-        toastView.layer.opacity = 1.0
-      }
-    } completion: { isAnimated in
-      DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) { [weak self] in
-        guard let self else { return }
-        self.dismissCLToast()
-      }
-    }
-  }
-  
-  private func removeVC(isAnimated: Bool) {
-    if isAnimated,
-       self.parent != nil {
-      self.removeFromParent()
-      self.view.removeFromSuperview()
-      self.dismiss(animated: true, completion: onDismiss)
-    }
-  }
+// MARK: Presenter
+// Toast Message를 present할 수 있는 델리게이트
+// CLToast의 present로 트리거되는 메소드를 갖는다.
+// Animation 설정에 따라 Toast를 present한다.
+public protocol CLToastPresentable: AnyObject, UIViewController {
+  var animationDelegate: (CLToastAnimatable)? { get set }
+  var toastView: UIView { get set }
+  var onDismiss: (() -> Void)? { get }
 }
