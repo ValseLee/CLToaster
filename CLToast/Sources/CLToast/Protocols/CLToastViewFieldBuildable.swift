@@ -7,26 +7,22 @@
 
 import UIKit
 
-protocol CLToastViewFieldBuildable: AnyObject {
-  func makeLabel(
-    in container: inout any CLToastViewField,
-    for path: WritableKeyPath<any CLToastViewField, UILabel?>,
-    config makeView: @escaping () -> UILabel
+protocol CLToastViewFieldBuildable {
+  associatedtype CLToastViewType: CLToastViewField
+  var toastView: CLToastViewType { get set }
+  
+  init(of toastView: CLToastViewType)
+  
+  @MainActor
+  mutating func makeLabel(
+    for path: WritableKeyPath<CLToastViewType, UILabel?>,
+    config makeView: @escaping @MainActor () -> UILabel?
   )
   
-  func makeImageView(
-    in container: inout any CLToastViewField,
-    for path: WritableKeyPath<any CLToastViewField, UIImageView?>,
-    config makeView: @escaping () -> UIImageView
+  @MainActor
+  mutating func makeImageView(
+    for path: WritableKeyPath<CLToastViewType, UIImageView?>,
+    config makeView: @escaping @MainActor () -> UIImageView?
   )
 }
 
-@dynamicMemberLookup
-protocol CLToastViewField {
-  var titleLabel: UILabel? { get set }
-  var descriptionLabel: UILabel? { get set }
-  var timelineLabel: UILabel? { get set }
-  var imageView: UIImageView? { get set }
-  
-  subscript(dynamicMember dynamicMember: KeyPath<Self, UIView>) -> UIView { get }
-}
