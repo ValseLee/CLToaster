@@ -5,7 +5,7 @@
 //  Created by Celan on 2/7/24.
 //
 
-import Foundation
+import UIKit
 
 /// CLToast가 기본으로 제공하는 템플릿 View를 정의합니다.
 /// 각각의 View는 이미 정해진 Layout으로 제공되며,
