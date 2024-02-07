@@ -7,14 +7,12 @@
 
 import UIKit
 
-final class CLToastDefaultVC: UIViewController, CLToastPresentable {
+internal class CLToastDefaultVC: UIViewController, CLToastPresentable {
+  typealias CLToastViewType = CLToastView
+  
   var animationDelegate: (CLToastAnimatable)?
   var onDismiss: (() -> Void)?
-  var toastView: UIView = {
-    let toast = CLToastView()
-    toast.set(icon: .actions, message: "Hi")
-    return toast
-  }()
+  var toastView: CLToastViewType = CLToastView()
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -29,20 +27,21 @@ final class CLToastDefaultVC: UIViewController, CLToastPresentable {
     )
   }
   
-  internal func configToastView() {
+  func configToastView() {
+    toastView.configLayer(cornerRadius: 20, opacity: 0.0, backgroundColor: .systemGray4)
+    toastView.makeSubviews()
     view.addSubview(toastView)
-    toastView.backgroundColor = .red
     toastView.translatesAutoresizingMaskIntoConstraints = false
     
     NSLayoutConstraint.activate([
       toastView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
       toastView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
       toastView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-      toastView.heightAnchor.constraint(equalToConstant: 70)
+      toastView.heightAnchor.constraint(equalToConstant: 100)
     ])
   }
   
-  private func removeVC(isAnimated: Bool) {
+  func removeVC(isAnimated: Bool) {
     if isAnimated {
       removeFromParent()
       view.removeFromSuperview()
