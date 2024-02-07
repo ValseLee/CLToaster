@@ -7,9 +7,9 @@ public enum OverNavigationBar: CLToastPresentStyle { }
 
 // MARK: Package Endpoint
 open class CLToast<PresentOver: CLToastPresentStyle> {
-  public var toastController: CLToastPresentable?
+  public var toastController: (any CLToastPresentable)?
   
-  public init(toastController: CLToastPresentable) {
+  public init(toastController: (any CLToastPresentable)) {
     self.toastController = toastController
   }
   
