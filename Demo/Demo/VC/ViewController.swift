@@ -18,7 +18,6 @@ final class CLToastDemoVC: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    navigationController?.setNavigationBarHidden(true, animated: false)
     title = "MAIN"
     view.backgroundColor = .yellow
     

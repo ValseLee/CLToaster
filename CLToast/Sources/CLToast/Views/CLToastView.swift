@@ -7,54 +7,39 @@
 
 import UIKit
 
-final class CLToastView: UIView {
-  internal var iconImageView = CLToastIconView()
-  internal var toastMessageLabel = CLToastMessageLabel()
+public class CLToastView: UIView {
+  var titleLabel: UILabel?
   
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    configToastViewLayer()
-    configIconImageView()
-    configToastMessageLabel()
-  }
-  
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  
-  public func set(
-    icon: UIImage,
-    message: String
+  func configLayer(
+    cornerRadius: CGFloat,
+    opacity: Float,
+    backgroundColor: UIColor
   ) {
-    iconImageView.image = icon
-    toastMessageLabel.text = message
-  }
-}
-
-// MARK: - Rendering
-extension CLToastView {
-  private func configToastViewLayer() {
-    layer.cornerRadius = 20
-    layer.opacity = 0.0
+    layer.cornerRadius = cornerRadius
+    layer.opacity = opacity
+    self.backgroundColor = backgroundColor
   }
   
-  private func configIconImageView() {
-    addSubview(iconImageView)
-    iconImageView.render(with: .IconSizes.default)
+  func makeSubviews() {
+    let container = CLToastViewFieldContainer(of: self)
+    var builderA = CLToastViewBuilder(of: container)
+   
+    builderA.makeLabel(for: \.toastView.titleLabel) { [weak self] in
+      guard let self else { return nil }
+      let label = UILabel()
+        .setFont(with: .title3)
+        .setTitle(with: "HiHi")
+        .setAlignment(to: .left)
     
-    NSLayoutConstraint.activate([
-      iconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: CGFloat.Padding.default),
-      iconImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-    ])
-  }
-  
-  private func configToastMessageLabel() {
-    addSubview(toastMessageLabel)
-
-    NSLayoutConstraint.activate([
-      toastMessageLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 12),
-      toastMessageLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -CGFloat.Padding.default),
-      toastMessageLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-    ])
+      self.addSubview(label)
+    
+      NSLayoutConstraint.activate([
+        label.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+        label.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+        label.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+        label.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
+      ])
+      return label
+    }
   }
 }

@@ -53,7 +53,7 @@ public struct CLToastAnimateClient: CLToastAnimatable {
   ) {
     UIView.animate(
       withDuration: 0.35,
-      delay: 0.35,
+      delay: 0.35 + 1.0,
       options: .curveEaseOut
     ) {
       toastView.frame.origin.y -= 40
