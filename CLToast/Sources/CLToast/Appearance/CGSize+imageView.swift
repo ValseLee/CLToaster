@@ -9,7 +9,7 @@ import UIKit
 
 extension CGSize {
   public enum IconSizes {
-    public static var `default` = CGSize(width: 16, height: 16)
+    public static var `default` = CGSize(width: 50, height: 50)
     /// 20 x 20
     public static var small = CGSize(width: 20, height: 20)
     /// 24 x 24
