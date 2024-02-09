@@ -8,11 +8,9 @@
 import UIKit
 
 internal class CLToastDefaultVC: UIViewController, CLToastPresentable {
-  typealias CLToastViewType = CLToastView
-  
   var animationDelegate: (CLToastAnimatable)?
   var onDismiss: (() -> Void)?
-  var toastView: CLToastViewType = CLToastView()
+  weak var toastView: UIView?
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -21,6 +19,7 @@ internal class CLToastDefaultVC: UIViewController, CLToastPresentable {
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
+    guard let toastView else { return }
     animationDelegate?.animate(
       for: toastView,
       completion: removeVC(isAnimated:)
@@ -28,8 +27,11 @@ internal class CLToastDefaultVC: UIViewController, CLToastPresentable {
   }
   
   func configToastView() {
-    toastView.configLayer(cornerRadius: 20, opacity: 0.0, backgroundColor: .systemGray4)
-    toastView.makeSubviews()
+    guard let toastView else { return }
+    toastView.layer.cornerRadius = 20
+    toastView.layer.opacity = 0.0
+    toastView.backgroundColor = .systemGray4
+    
     view.addSubview(toastView)
     toastView.translatesAutoresizingMaskIntoConstraints = false
     

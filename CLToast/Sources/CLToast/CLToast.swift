@@ -1,50 +1,54 @@
 import UIKit
 
-// MARK: Present Style Constraint
-public protocol CLToastPresentStyle { }
-public enum OverViewController: CLToastPresentStyle { }
-public enum OverNavigationBar: CLToastPresentStyle { }
+public struct CLToastComponent {
+  var title: String
+  var description: String?
+  var timeline: String?
+  var image: UIImage?
+  var animationDuration: TimeInterval
+}
 
 // MARK: Package Endpoint
-open class CLToast<PresentOver: CLToastPresentStyle> {
-  public var toastController: (any CLToastPresentable)?
+open class CLToast {
+  private var viewBuilder = CLToastViewBuilder()
+  private var animationBuilder = CLToastAnimateClient()
   
-  public init(toastController: (any CLToastPresentable)) {
-    self.toastController = toastController
-  }
-  
-  public init() {
-    let defaultVC = CLToastDefaultVC()
-    let defaultAnimation = CLToastAnimateClient()
-    defaultVC.animationDelegate = defaultAnimation
-    self.toastController = defaultVC
-  }
+  public init() { }
 }
 
-extension CLToast where PresentOver == OverNavigationBar {
+extension CLToast {
   public func present(in parent: UIViewController) {
     guard
-      let toastController,
       let nav = parent.navigationController,
       !nav.isNavigationBarHidden else { return }
-    nav.addChild(toastController)
-    nav.navigationBar.addSubview(toastController.view)
-
-    nav.beginAppearanceTransition(true, animated: true)
-    nav.endAppearanceTransition()
+    guard let toastView = try? viewBuilder
+      .buildComponents(in: .description("HIHI"))
+      .buildComponents(in: .title("Hi"))
+      .buildToastView() else { return }
     
-    toastController.didMove(toParent: nav)
-    toastController.view.frame = nav.navigationBar.bounds
+    toastView.frame = CGRect(
+      origin:
+        CGPoint(
+          x: nav.navigationBar.bounds.origin.x,
+          y: nav.navigationBar.bounds.origin.y - 40
+        ),
+      size: CGSize(
+        width: nav.navigationBar.bounds.width,
+        height: 70
+      )
+    )
+    
+    toastView.layer.opacity = 0.0
+    toastView.layer.cornerRadius = 20
+    toastView.backgroundColor = .red
+    animationBuilder.animate(
+      for: toastView,
+      completion: dot(s:)
+    )
+    nav.navigationBar.addSubview(toastView)
   }
-}
-
-extension CLToast where PresentOver == OverViewController {
-  public func present(in parent: UIViewController) {
-    guard let toastController else { return }
-    parent.addChild(toastController)
-    parent.view.addSubview(toastController.view)
-    
-    toastController.didMove(toParent: parent)
-    toastController.view.frame.size = CGSize(width: parent.view.bounds.width, height: 150)
+  
+  private func dot(s: Bool) {
+    print("NONO")
   }
 }

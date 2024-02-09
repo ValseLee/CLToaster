@@ -8,16 +8,21 @@
 import UIKit
 
 extension UIImageView {
-  func setImage(with image: UIImage) -> Self {
+  @discardableResult
+  func setImage(with image: UIImage?) -> Self {
     self.image = image
     return self
   }
   
-  func setImageSize(with size: CGSize) -> Self {
-    NSLayoutConstraint.activate([
-      self.widthAnchor.constraint(equalToConstant: size.width),
-      self.heightAnchor.constraint(equalToConstant: size.height),
-    ])
+  @discardableResult
+  func setIdentifier(with id: String) -> Self {
+    self.accessibilityIdentifier = id
+    return self
+  }
+  
+  @discardableResult
+  func configAutoLayout() -> Self {
+    translatesAutoresizingMaskIntoConstraints = false
     return self
   }
 }

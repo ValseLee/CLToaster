@@ -12,9 +12,7 @@ import UIKit
 // CLToast의 present로 트리거되는 메소드를 갖는다.
 // Animation 설정에 따라 Toast를 present한다.
 public protocol CLToastPresentable: AnyObject, UIViewController {
-  associatedtype CLToastViewType: UIView
-  
+  var toastView: UIView? { get set }
   var animationDelegate: (CLToastAnimatable)? { get set }
-  var toastView: CLToastViewType { get set }
   var onDismiss: (() -> Void)? { get }
 }
