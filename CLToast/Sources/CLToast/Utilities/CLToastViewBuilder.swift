@@ -33,7 +33,7 @@ public struct CLToastViewBuilder {
         .setIdentifier(with: section.identifier)
       
       toastView.addSubview(label)
-      layout(view: label, in: section)
+      configDefaultLayout(view: label, in: section)
       
     case .description(let description):
       let label = UILabel()
@@ -45,7 +45,7 @@ public struct CLToastViewBuilder {
         .setIdentifier(with: section.identifier)
       
       toastView.addSubview(label)
-      layout(view: label, in: section)
+      configDefaultLayout(view: label, in: section)
       
     case .timeline(let time):
       let label = UILabel()
@@ -57,35 +57,40 @@ public struct CLToastViewBuilder {
         .setIdentifier(with: section.identifier)
       
       toastView.addSubview(label)
-      layout(view: label, in: section)
+      configDefaultLayout(view: label, in: section)
       
     case .image(let image, _):
       let imageView = UIImageView()
         .configAutoLayout()
         .setImage(with: image)
         .setIdentifier(with: section.identifier)
+      imageView.contentMode = .scaleAspectFit
       
       toastView.addSubview(imageView)
-      layout(view: imageView, in: section)
+      configDefaultLayout(view: imageView, in: section)
     }
     
     return self
   }
   
-  public func buildToastView() throws -> UIView {
+  public func buildToastView() throws -> UIView? {
     guard let titleLabel = getSubview(for: "TITLE") else {
       throw CLViewBuildError.noTitleLabel
     }
     if let descriptionView = getSubview(for: "DESCRIPTION") {
       descriptionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4).isActive = true
     }
+    
     adjustLayouts()
     return toastView
   }
 }
 
 extension CLToastViewBuilder {
-  func layout(view: UIView, in section: CLDefaultToastViewSection) {
+  func configDefaultLayout(
+    view: UIView,
+    in section: CLDefaultToastViewSection
+  ) {
     switch section {
     case .title(_):
       NSLayoutConstraint.activate([
@@ -115,7 +120,7 @@ extension CLToastViewBuilder {
   }
   
   func adjustLayouts() {
-    if let imageView = toastView.subviews.first(where: { $0.accessibilityIdentifier == "IMAGE" }) {
+    if let imageView = getSubview(for: "IMAGE") {
       toastView.subviews.forEach {
         if $0.accessibilityIdentifier == "IMAGE" { return }
         $0.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16).isActive = true
