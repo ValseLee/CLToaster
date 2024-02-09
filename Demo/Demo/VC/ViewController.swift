@@ -39,11 +39,8 @@ final class CLToastDemoVC: UIViewController {
   
   @objc
   private func presentToast() {
-    let navigationToast = CLToast<OverNavigationBar>()
+    let navigationToast = CLToast()
     navigationToast.present(in: self)
-    
-//    let vcToast = CLToast<OverViewController>()
-//    vcToast.present(in: self)
+//    navigationToast.present(in: self)
   }
 }
-
