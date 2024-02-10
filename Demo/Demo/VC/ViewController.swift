@@ -96,9 +96,9 @@ final class CLToastDemoVC: UIViewController {
   @objc
   private func presentDetailedToast() {
     let style = CLToastStyleBuilder("Title")
-      .buildValue(\.description, newValue: "Description")
-      .buildValue(\.timeline, newValue: Date().formatted())
-      .buildValue(\.image, newValue: .actions)
+      .buildValue(\.description, into: "Description")
+      .buildValue(\.timeline, into: Date().formatted())
+      .buildValue(\.image, into: .actions)
       .buildStyle()
     
     CLToast(with: style) { [weak self] in
@@ -116,7 +116,7 @@ final class CLToastDemoVC: UIViewController {
   @objc
   private func presentToastWithCustomizeAnimation() {
     let style = CLToastStyleBuilder("Title")
-      .buildValue(\.animateSpeed, newValue: 1)
+      .buildValue(\.animateSpeed, into: 1)
       .buildStyle()
     
     CLToast(with: style,animationManager: MyAnimationManager(style: style))
@@ -126,9 +126,9 @@ final class CLToastDemoVC: UIViewController {
   @objc
   private func presentToastFromBottom() {
     let style = CLToastStyleBuilder("Bottom Toast")
-      .buildValue(\.description, newValue: "Description Here")
-      .buildValue(\.timeline, newValue: Date().formatted())
-      .buildValue(\.displayFrom, newValue: .bottom)
+      .buildValue(\.description, into: "Description Here")
+      .buildValue(\.timeline, into: Date().formatted())
+      .buildValue(\.displayFrom, into: .bottom)
       .buildStyle()
     
     CLToast(with: style)

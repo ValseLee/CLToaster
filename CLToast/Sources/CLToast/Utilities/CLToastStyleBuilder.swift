@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  
+//  CLToastStyleBuilder.swift
+//
 //
 //  Created by Celan on 2/10/24.
 //
@@ -14,7 +14,7 @@ public class CLToastStyleBuilder {
   
   public func buildValue<Value>(
     _ path: WritableKeyPath<CLToastStyle,Value>,
-    newValue: Value
+    into newValue: Value
   ) -> Self {
     style[keyPath: path] = newValue
     return self
