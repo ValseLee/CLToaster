@@ -7,33 +7,13 @@
 
 import UIKit
 
+public enum CLToastDisplaySection {
+  case top, bottom, center
+}
+
 public struct CLToastStyle {
   public init(title: String) {
     self.title = title
-  }
-  
-  public init(
-    layerOpacity: Float,
-    layerCornerRadius: CGFloat,
-    title: String,
-    description: String? = nil,
-    timeline: String? = nil,
-    image: UIImage? = nil,
-    displayTimeInterval: TimeInterval,
-    displayFrom: CLToastDisplaySection,
-    animateY: CGFloat,
-    animateOpacity: Float
-  ) {
-    self.layerOpacity = layerOpacity
-    self.layerCornerRadius = layerCornerRadius
-    self.title = title
-    self.description = description
-    self.timeline = timeline
-    self.image = image
-    self.displayTimeInterval = displayTimeInterval
-    self.displayFrom = displayFrom
-    self.animateY = animateY
-    self.animateOpacity = animateOpacity
   }
   
   /**
@@ -41,7 +21,7 @@ public struct CLToastStyle {
    */
   
   public var layerOpacity: Float = 0.3
-  public var layerCornerRadius: CGFloat = 12
+  public var layerCornerRadius: CGFloat = 16
   public var height: CGFloat = 100
   public var backgroundColor: UIColor = .systemGray2
   
@@ -50,12 +30,11 @@ public struct CLToastStyle {
    ToastView title is required.
    */
   
-  
   public var title: String
   public var description: String?
   public var timeline: String?
   public var image: UIImage?
-  public var imageSize: CGSize? = CGSize.IconSizes.default
+  public var imageSize: CGSize = CGSize.IconSizes.default
   
   /**
    - Properties: Animation
@@ -65,6 +44,10 @@ public struct CLToastStyle {
    Display ToastView for its value.
    */
   public var displayTimeInterval: TimeInterval = 1.0
+  
+  /**
+   Display ToastView from given section value.
+   */
   public var displayFrom: CLToastDisplaySection = .top
   
   /**
@@ -90,9 +73,5 @@ public struct CLToastStyle {
   /**
    Flag determines ToastView to animate.
    */
-  public var isAnimateEnabled: Bool = false
-}
-
-public enum CLToastDisplaySection {
-  case top, bottom, center
+  public var isAnimationEnabled: Bool = true
 }
