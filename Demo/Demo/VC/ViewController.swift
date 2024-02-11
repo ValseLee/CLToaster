@@ -116,10 +116,9 @@ final class CLToastDemoVC: UIViewController {
   @objc
   private func presentToastWithCustomizeAnimation() {
     let style = CLToastStyleBuilder("Title")
-      .buildValue(\.animateSpeed, into: 1)
       .buildStyle()
     
-    CLToast(with: style,animationManager: MyAnimationManager(style: style))
+    CLToast(with: style, animationManager: MyAnimationManager(style: style))
       .present(in: view)
   }
   
@@ -146,13 +145,15 @@ struct MyAnimationManager: CLToastAnimatable {
     completion: @escaping () -> Void
   ) {
     UIView.animate(withDuration: style.animateSpeed) {
-      view.frame.origin.x += 20
+      view.layer.opacity = 1.0
+      view.frame.origin.x += 40
     } completion: { isAnimated in
       if isAnimated {
         UIView.animate(
           withDuration: style.animateSpeed,
           delay: style.displayTimeInterval
         ) {
+          view.layer.opacity = 0.0
           view.frame.origin.y -= style.animateY
         } completion: { isAnimated in
           if isAnimated { view.removeFromSuperview() }
