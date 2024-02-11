@@ -47,20 +47,18 @@ public struct CLToast {
   /**
    Initialize ``CLToast`` Manager with given parameters. Use this initializer when you want to customize your toastView's appearing and disappearing animation.
    - Parameters:
-     - style: ``CLToastStyle`` which configures toastView's properties like title, description, display Duration, etc.
      - animation: Animation configuring object which conforms ``CLToastAnimatable``.
      - completion: Closure which is called when current toastView has been completely disappeared. You can skip this when you don't have to call any callbacks. ToastView will be removed from parent view when its animation is ended by default.
    
    When you use your own animationManager, you should manage toastView's removal from ``CLToastAnimatable.animate(for:completion:)`` since ``CLToast`` only calls the ``CLToastAnimatable.animate(for:completion:)`` before ``addSubview``.
    */
   public init(
-    with style: CLToastStyle,
     animationManager: CLToastAnimatable,
     completion: (() -> Void)? = nil
   ) {
-    self.style = style
-    self.viewBuilder = CLToastViewBuilder(style: style)
     self.animationManager = animationManager
+    self.style = animationManager.style
+    self.viewBuilder = CLToastViewBuilder(style: style)
     
     guard let completion else { return }
     self.completion = completion

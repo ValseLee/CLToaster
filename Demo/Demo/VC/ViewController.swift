@@ -115,10 +115,8 @@ final class CLToastDemoVC: UIViewController {
   
   @objc
   private func presentToastWithCustomizeAnimation() {
-    let style = CLToastStyleBuilder("Title")
-      .buildStyle()
-    
-    CLToast(with: style, animationManager: MyAnimationManager(style: style))
+    let style = CLToastStyle(title: "Title")
+    CLToast(animationManager: MyAnimationManager(style: style))
       .present(in: view)
   }
   
