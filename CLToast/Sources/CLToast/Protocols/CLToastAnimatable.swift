@@ -7,60 +7,71 @@
 
 import UIKit
 
-// MARK: Animate
-// Toast Message의 Animation을 설정하는 델리게이트
-// 외부에 노출해도 괜찮다. animate만 맞춰주면 오케이
-// 아마 UIView가 채택하는 구조가 될 것
 public protocol CLToastAnimatable {
-  func appearingAnimate(for toastView: UIView, didAppear: @escaping (Bool) -> Void)
-  func disappearingAnimate(for toastView: UIView, didDisappear: @escaping (Bool) -> Void)
-  func animate(for view: UIView, completion: @escaping (Bool) -> Void)
+  var style: CLToastStyle { get }
+  func animate(for view: UIView, completion: @escaping () -> Void)
 }
 
-public struct CLToastAnimateClient: CLToastAnimatable {
-  /// 애니메이션을 시동합니다.
+struct CLToastAnimateClient: CLToastAnimatable {
+  let style: CLToastStyle
+  
+  /// Trigger toastView's Animation with given ``CLToastStyle``.
   /// - Parameters:
   ///   - view: 애니메이션을 동작할 Toast Message View를 전달합니다.
   ///   - completion: 애니메이션이 완전히 종료된 후 호출할 메소드를 전달합니다.
-  public func animate(for view: UIView, completion: @escaping (Bool) -> Void) {
-    appearingAnimate(for: view) { isAniamted in
-      disappearingAnimate(for: view) { isAnimated in
-        completion(isAniamted)
-      }
+  func animate(for view: UIView, completion: @escaping () -> Void) {
+    guard style.isAnimationEnabled else { return }
+    let appearingAnimation = makeAppearingAnimation(for: view)
+    let disappearingAnimation = makeDisappearingAnimation(for: view, didDisappear: completion)
+    
+    appearingAnimation.addCompletion { currentState in
+      guard case .end = currentState else { return }
+      disappearingAnimation.startAnimation(afterDelay: style.displayTimeInterval)
+    }
+    
+    appearingAnimation.startAnimation()
+  }
+}
+
+fileprivate extension CLToastAnimateClient {
+  func makeAppearingAnimation(for toastView: UIView) -> UIViewPropertyAnimator {
+    UIViewPropertyAnimator(
+      duration: style.animateSpeed,
+      curve: .easeInOut
+    ) {
+      toastView.frame.origin.y += getAnimateOffset()
+      toastView.layer.opacity = style.animateOpacity
     }
   }
   
-  public func appearingAnimate(
+  func makeDisappearingAnimation(
     for toastView: UIView,
-    didAppear: @escaping (Bool) -> Void
-  ) {
-    UIView.animate(
-      withDuration: 0.35,
-      delay: 0.0,
-      options: .curveEaseOut
+    didDisappear: @escaping () -> Void
+  ) -> UIViewPropertyAnimator {
+    let animation = UIViewPropertyAnimator(
+      duration: style.animateSpeed,
+      curve: .easeInOut
     ) {
-      toastView.frame.origin.y += 40
-      toastView.layer.opacity = 1.0
-      
-    } completion: { isAnimated in
-      didAppear(isAnimated)
-    }
-  }
-  
-  public func disappearingAnimate(
-    for toastView: UIView,
-    didDisappear: @escaping (Bool) -> Void
-  ) {
-    UIView.animate(
-      withDuration: 0.35,
-      delay: 0.35 + 1.0,
-      options: .curveEaseOut
-    ) {
-      toastView.frame.origin.y -= 40
+      toastView.frame.origin.y -= getAnimateOffset()
       toastView.layer.opacity = 0.0
-      
-    } completion: { isAnimated in
-      didDisappear(isAnimated)
+    }
+    
+    animation.addCompletion { currentState in
+      guard case .end = currentState else { return }
+      didDisappear()
+      toastView.removeFromSuperview()
+    }
+    return animation
+  }
+  
+  func getAnimateOffset() -> CGFloat {
+    switch style.displayFrom {
+    case .top:
+      style.animateY
+    case .bottom:
+      -style.animateY
+    case .center:
+      CGFloat.zero
     }
   }
 }

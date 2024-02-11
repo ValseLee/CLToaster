@@ -7,27 +7,19 @@
 
 import UIKit
 
-enum CLViewBuildError: Error {
-  case noTitleLabel
-  case duplicateComponents
-}
-
-public struct CLToastViewBuilder {
-  internal var toastView: UIView = UIView()
+struct CLToastViewBuilder {
+  var style: CLToastStyle
+  var toastView: UIView = UIView()
   
-  public func buildComponents(
-    in section: CLDefaultToastViewSection,
+  func buildComponents(
+    in section: CLToastViewSection,
     color: UIColor? = nil
-  ) throws -> Self {
-    guard getSubview(for: section.identifier) == nil else {
-      throw CLViewBuildError.duplicateComponents
-    }
-    
+  ) {
     switch section {
-    case .title(let title):
+    case .title:
       let label = UILabel()
         .configAutoLayout()
-        .setTitle(with: title)
+        .setTitle(with: style.title)
         .setFont(with: .title3)
         .setColor(with: color ?? .label)
         .setIdentifier(with: section.identifier)
@@ -35,19 +27,21 @@ public struct CLToastViewBuilder {
       toastView.addSubview(label)
       configDefaultLayout(view: label, in: section)
       
-    case .description(let description):
+    case .description:
+      guard let description = style.description else { break }
       let label = UILabel()
         .configAutoLayout()
         .setTitle(with: description)
         .setColor(with: color ?? .label)
-        .setFont(with: .body)
+        .setFont(with: .footnote)
         .setAlignment(to: .left)
         .setIdentifier(with: section.identifier)
       
       toastView.addSubview(label)
       configDefaultLayout(view: label, in: section)
       
-    case .timeline(let time):
+    case .timeline:
+      guard let time = style.timeline else { break }
       let label = UILabel()
         .configAutoLayout()
         .setAlignment(to: .right)
@@ -59,7 +53,8 @@ public struct CLToastViewBuilder {
       toastView.addSubview(label)
       configDefaultLayout(view: label, in: section)
       
-    case .image(let image, _):
+    case .image:
+      guard let image = style.image else { break }
       let imageView = UIImageView()
         .configAutoLayout()
         .setImage(with: image)
@@ -69,18 +64,14 @@ public struct CLToastViewBuilder {
       toastView.addSubview(imageView)
       configDefaultLayout(view: imageView, in: section)
     }
-    
-    return self
   }
   
-  public func buildToastView() throws -> UIView? {
-    guard let titleLabel = getSubview(for: "TITLE") else {
-      throw CLViewBuildError.noTitleLabel
-    }
-    if let descriptionView = getSubview(for: "DESCRIPTION") {
-      descriptionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4).isActive = true
-    }
-    
+  func buildToastView() -> UIView? {
+    buildComponents(in: .title)
+    if let description = style.description { buildComponents(in: .description ) }
+    if let timeline = style.timeline { buildComponents(in: .timeline) }
+    if let image = style.image { buildComponents(in: .image) }
+   
     adjustLayouts()
     return toastView
   }
@@ -89,30 +80,31 @@ public struct CLToastViewBuilder {
 extension CLToastViewBuilder {
   func configDefaultLayout(
     view: UIView,
-    in section: CLDefaultToastViewSection
+    in section: CLToastViewSection
   ) {
     switch section {
-    case .title(_):
+    case .title:
       NSLayoutConstraint.activate([
-        view.topAnchor.constraint(equalTo: toastView.topAnchor, constant: 20),
-        view.trailingAnchor.constraint(equalTo: toastView.trailingAnchor, constant: -20),
+        view.topAnchor.constraint(equalTo: toastView.topAnchor, constant: 12),
+        view.trailingAnchor.constraint(equalTo: toastView.trailingAnchor, constant: -16),
       ])
       
-    case .description(_):
+    case .description:
+      view.trailingAnchor.constraint(equalTo: toastView.trailingAnchor, constant: -16).isActive = true
+      if let titleLabel = getComponent(in: .title) {
+        view.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4).isActive = true
+      }
+      
+    case .timeline:
       NSLayoutConstraint.activate([
-        view.trailingAnchor.constraint(equalTo: toastView.trailingAnchor, constant: -20),
+        view.bottomAnchor.constraint(equalTo: toastView.bottomAnchor, constant: -12),
+        view.trailingAnchor.constraint(equalTo: toastView.trailingAnchor, constant: -16),
       ])
       
-    case .timeline(_):
+    case .image:
       NSLayoutConstraint.activate([
-        view.bottomAnchor.constraint(equalTo: toastView.bottomAnchor, constant: -16),
-        view.trailingAnchor.constraint(equalTo: toastView.trailingAnchor, constant: -20),
-      ])
-      
-    case .image(_, let size):
-      NSLayoutConstraint.activate([
-        view.widthAnchor.constraint(equalToConstant: size.width),
-        view.heightAnchor.constraint(equalToConstant: size.height),
+        view.widthAnchor.constraint(equalToConstant: style.imageSize.width),
+        view.heightAnchor.constraint(equalToConstant: style.imageSize.height),
         view.leadingAnchor.constraint(equalTo: toastView.leadingAnchor, constant: 16),
         view.centerYAnchor.constraint(equalTo: toastView.centerYAnchor),
       ])
@@ -120,21 +112,21 @@ extension CLToastViewBuilder {
   }
   
   func adjustLayouts() {
-    if let imageView = getSubview(for: "IMAGE") {
+    if let imageView = getComponent(in: .image) {
       toastView.subviews.forEach {
-        if $0.accessibilityIdentifier == "IMAGE" { return }
-        $0.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16).isActive = true
+        if $0.accessibilityIdentifier == CLToastViewSection.image.identifier { return }
+        $0.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 12).isActive = true
       }
     } else {
       toastView.subviews.forEach {
-        $0.leadingAnchor.constraint(equalTo: toastView.leadingAnchor, constant: 16).isActive = true
+        $0.leadingAnchor.constraint(equalTo: toastView.leadingAnchor, constant: 12).isActive = true
       }
     }
   }
   
-  func getSubview(for id: String) -> UIView? {
+  func getComponent(in section: CLToastViewSection) -> UIView? {
     toastView.subviews.first(
-      where: { $0.accessibilityIdentifier == id }
+      where: { $0.accessibilityIdentifier == section.identifier }
     )
   }
 }
