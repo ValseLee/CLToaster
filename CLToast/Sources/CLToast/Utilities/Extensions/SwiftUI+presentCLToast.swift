@@ -1,18 +1,25 @@
 //
-//  SwiftUIView.swift
-//  
+//  SwiftUI+presentCLToast.swift
+//
 //
 //  Created by Celan on 2/12/24.
 //
 
 import SwiftUI
 
-struct SwiftUIView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-#Preview {
-    SwiftUIView()
+public extension View {
+  @ViewBuilder
+  func presentToast(
+    isPresented: Binding<Bool>,
+    with style: CLToastStyle,
+    onDismiss: (() -> Void)? = nil
+  ) -> some View {
+    modifier(
+      CLToastViewModifier(
+        isPresented: isPresented,
+        style: style,
+        onDismiss: onDismiss
+      )
+    )
+  }
 }
