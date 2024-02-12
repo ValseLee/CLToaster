@@ -9,10 +9,10 @@ import CLToast
 import UIKit
 
 final class CLToastDemoVC: UIViewController {
-  var detailedToastPresentButton: UIButton = UIButton()
-  var basicToastPresentButton: UIButton = UIButton()
-  var customizedAnimationToastPresentButton: UIButton = UIButton()
-  var bottomToastPresentButton: UIButton = UIButton()
+  var detailedToastPresentButton = UIButton()
+  var basicToastPresentButton = UIButton()
+  var customizedAnimationToastPresentButton = UIButton()
+  var bottomToastPresentButton = UIButton()
   
   override func viewDidLoad() {
     super.viewDidLoad()
