@@ -3,10 +3,10 @@ import UIKit
 public struct CLToast {
   private var layerClient = CLToastViewLayerClient()
   private var animationManager: any CLToastAnimatable
-  private var viewBuilder: CLToastViewBuilder
+  private var viewBuilder: any CLToastViewBuildDelegate
   
-  public var style: CLToastStyle
-  public var completion: () -> Void = { }
+  public let style: CLToastStyle
+  public let completion: (() -> Void)?
   
   /// Initialize ``CLToast`` Manager with Toast's title, frame height, display Direction.
   /// You can call this with basic toast message without a completion handler.
@@ -26,6 +26,7 @@ public struct CLToast {
       
     self.viewBuilder = CLToastViewBuilder(style: style)
     self.animationManager = CLToastAnimateClient(style: style)
+    self.completion = nil
   }
   
   /// Initialize ``CLToast`` Manager with given parameters, style and completion handler.
@@ -39,8 +40,6 @@ public struct CLToast {
     self.style = style
     self.viewBuilder = CLToastViewBuilder(style: style)
     self.animationManager = CLToastAnimateClient(style: style)
-    
-    guard let completion else { return }
     self.completion = completion
   }
   
@@ -59,8 +58,6 @@ public struct CLToast {
     self.animationManager = animationManager
     self.style = animationManager.style
     self.viewBuilder = CLToastViewBuilder(style: style)
-    
-    guard let completion else { return }
     self.completion = completion
   }
 }
@@ -75,7 +72,9 @@ public extension CLToast {
     guard let toastView = buildToastView(with: style) else { return }
     layerClient.configLayer(for: toastView, with: style)
     
-    if style.isAnimationEnabled {
+    if
+      let completion,
+      style.isAnimationEnabled {
       animationManager.animate(for: toastView, completion: completion)
       addSubview(toastView, for: view)
     } else {
@@ -84,7 +83,7 @@ public extension CLToast {
   }
 }
 
-// MARK: - Build Views
+// MARK: - UIKit
 internal extension CLToast {
   /**
    Present a ToastView with default ToastView built by given style.
@@ -99,6 +98,7 @@ internal extension CLToast {
     addSubview(toastView, for: view)
     try? await Task.sleep(nanoseconds: UInt64(style.displayTimeInterval * 1_000_000_000))
     toastView.removeFromSuperview()
+    guard let completion else { return }
     completion()
   }
   
@@ -109,7 +109,7 @@ internal extension CLToast {
   
   func buildToastView(with style: CLToastStyle) -> UIView? {
     guard let toastView = viewBuilder.buildToastView() else { return nil }
-    return toastView
+    return toastView as? UIView
   }
   
   func configAutoLayout(of toastView: UIView, in view: UIView) {
