@@ -7,20 +7,11 @@
 
 import SwiftUI
 
-struct CLToastViewTransitionManager: CLToastAnimatable {
-  let style: CLToastStyle
-  func animate(
-    for view: UIView,
-    completion: @escaping () -> Void
-  ) {
-    
-  }
-}
-
 public struct CLToastViewModifier: ViewModifier {
   @Binding var isPresented: Bool
   @State private var isPresenting: Bool = false
-  let animationManager: any CLToastAnimatable
+  
+  let animationManager: any CLToastAnimation
   let onDismiss: (() -> Void)?
   let style: CLToastStyle
   
@@ -39,7 +30,7 @@ public struct CLToastViewModifier: ViewModifier {
     onDismiss: (() -> Void)? = nil
   ) {
     self.style = style
-    self.animationManager = CLToastViewTransitionManager(style: style)
+    self.animationManager = CLToastTransitionClient()
     self._isPresented = isPresented
     self.onDismiss = onDismiss
   }
@@ -63,17 +54,30 @@ public struct CLToastViewModifier: ViewModifier {
         }
       }
   }
+  
+  private func dismissToast() {
+    if style.isAnimationEnabled {
+      let animation = Animation.easeInOut(duration: style.animateSpeed)
+      withAnimation(animation) {
+        isPresented = false
+        isPresenting = false
+      }
+    } else {
+      isPresented = false
+      isPresenting = false
+    }
+  }
 }
 
 // MARK: - ViewModifier as ViewBuilder
-extension CLToastViewModifier: CLToastViewBuildDelegate {
-  var titleView: some View {
+extension CLToastViewModifier: CLToastViewBuildable {
+  private var titleView: some View {
     Text(style.title)
       .foregroundColor(Color(uiColor: .label))
       .font(.title2)
   }
   
-  var descriptionView: (some View)? {
+  private var descriptionView: (some View)? {
     if let description = style.description {
       Text(description)
         .foregroundColor(Color(uiColor: .label))
@@ -82,7 +86,7 @@ extension CLToastViewModifier: CLToastViewBuildDelegate {
     } else { nil }
   }
   
-  var timelineView: (some View)? {
+  private var timelineView: (some View)? {
     if let timeline = style.timeline {
       Text(timeline)
         .foregroundColor(Color(uiColor: .secondaryLabel))
@@ -97,7 +101,7 @@ extension CLToastViewModifier: CLToastViewBuildDelegate {
     } else { nil }
   }
   
-  var imageView: (some View)? {
+  private var imageView: (some View)? {
     if let image = style.image {
       Image(uiImage: image)
         .resizable()
@@ -151,30 +155,14 @@ extension CLToastViewModifier: CLToastViewBuildDelegate {
       .frame(height: style.height)
       .frame(maxWidth: .infinity)
       .padding(.horizontal, 16)
-      .transition(
-        .move(edge: .top)
-        .combined(with: .opacity)
-      )
+      .transition(animationManager.makeAnimation(with: style) as! AnyTransition)
       .task {
         let displayTime = style.displayTimeInterval + style.animateSpeed
         try? await Task.sleep(nanoseconds: UInt64(displayTime * 1_000_000_000))
         dismissToast()
       }
-  }
-  
-  func dismissToast() {
-    defer {
-      if let onDismiss { onDismiss() }
-    }
-    
-    if style.isAnimationEnabled {
-      withAnimation {
-        isPresented = false
-        isPresenting = false
+      .onDisappear {
+        if let onDismiss { onDismiss() }
       }
-    } else {
-      isPresented = false
-      isPresenting = false
-    }
   }
 }
