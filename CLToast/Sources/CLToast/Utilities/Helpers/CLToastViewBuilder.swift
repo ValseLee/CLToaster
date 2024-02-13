@@ -6,16 +6,8 @@
 //
 
 import UIKit
-import SwiftUI
 
-/// ToastView를 Build하는 빌더의 추상화 프로토콜
-/// UIKit, SwiftUI에 대응할 수 있도록 추상화 타입을 리턴하도록 한다.
-public protocol CLToastViewBuildDelegate {
-  associatedtype ToastView
-  func buildToastView() -> ToastView?
-}
-
-struct CLToastViewBuilder: CLToastViewBuildDelegate {
+struct CLToastViewBuilder: CLToastViewBuildable {
   var style: CLToastStyle
   var toastView: UIView = UIView()
   
