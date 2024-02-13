@@ -7,9 +7,20 @@
 
 import SwiftUI
 
+struct CLToastViewTransitionManager: CLToastAnimatable {
+  let style: CLToastStyle
+  func animate(
+    for view: UIView,
+    completion: @escaping () -> Void
+  ) {
+    
+  }
+}
+
 public struct CLToastViewModifier: ViewModifier {
   @Binding var isPresented: Bool
   @State private var isPresenting: Bool = false
+  let animationManager: any CLToastAnimatable
   let onDismiss: (() -> Void)?
   let style: CLToastStyle
   
@@ -21,16 +32,19 @@ public struct CLToastViewModifier: ViewModifier {
     }
   }
   
+  // MARK: Initailizer
   public init(
     isPresented: Binding<Bool>,
     style: CLToastStyle,
     onDismiss: (() -> Void)? = nil
   ) {
     self.style = style
+    self.animationManager = CLToastViewTransitionManager(style: style)
     self._isPresented = isPresented
     self.onDismiss = onDismiss
   }
   
+  // MARK: - Body
   public func body(content: Content) -> some View {
     content
       .onChange(of: isPresented) { newValue in
