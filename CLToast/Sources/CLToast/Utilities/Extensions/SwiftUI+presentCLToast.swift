@@ -8,7 +8,6 @@
 import SwiftUI
 
 public extension View {
-  @ViewBuilder
   func presentToast(
     isPresented: Binding<Bool>,
     with style: CLToastStyle,
@@ -21,5 +20,29 @@ public extension View {
         onDismiss: onDismiss
       )
     )
+  }
+
+  func presentToast(
+    isPresented: Binding<Bool>,
+    with title: String,
+    height: CGFloat,
+    onDismiss: (() -> Void)? = nil
+  ) -> some View {
+    let style = CLToastStyleBuilder(title)
+      .buildValue(\.height, into: height)
+      .buildStyle()
+    
+    return modifier(CLToastViewModifier(isPresented: isPresented, style: style, onDismiss: onDismiss))
+  }
+  
+  func presentToast(
+    isPresented: Binding<Bool>,
+    with style: CLToastStyle,
+    animate: any CLToastAnimation,
+    onDismiss: (() -> Void)? = nil
+  ) -> some View {
+    let style = style
+    
+    return modifier(CLToastViewModifier(isPresented: isPresented, style: style, onDismiss: onDismiss))
   }
 }
