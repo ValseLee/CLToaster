@@ -1,18 +1,51 @@
 //
-//  MySwiftUI.swift
+//  MySwiftUIView.swift
 //  Demo
 //
 //  Created by Celan on 2/12/24.
 //
 
+import CLToast
 import SwiftUI
 
-struct MySwiftUI: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+struct MySwiftUIView: View {
+  let style = CLToastStyleBuilder("Hi")
+    .buildValue(\.description, into: "HIHI")
+    .buildValue(\.timeline, into: "Yes")
+    .buildValue(\.animateY, into: 10)
+    .buildValue(\.displayTimeInterval, into: 1)
+    .buildValue(\.animateSpeed, into: 1)
+    .buildStyle()
+  
+  @State private var isDefaultToastPresented = false
+  @State private var randomColor = [
+    Color.red,
+    Color.yellow,
+    Color.orange
+  ]
+  
+  var body: some View {
+    ScrollView {
+      Button {
+        isDefaultToastPresented = true
+      } label: {
+        Text("default")
+      }
     }
+    .frame(maxWidth: .infinity)
+    .background { randomColor.randomElement()! }
+    .presentToast(
+      isPresented: $isDefaultToastPresented,
+      with: style
+    ) {
+      print("Dismissed")
+    }
+  }
 }
 
 #Preview {
-    MySwiftUI()
+  NavigationStack {
+    MySwiftUIView()
+      .navigationTitle("Hi")
+  }
 }
