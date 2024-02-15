@@ -12,6 +12,21 @@ public enum CLToastDisplaySection {
 }
 
 public struct CLToastStyle {
+  struct CLToastAnimations {
+    var isAnimationEnabled = true
+    var animateFrom: CLToastDisplaySection = .top
+    var displayTime: TimeInterval = 1.0
+    var offsetY: CGFloat = 40
+    var opacity: Float = 1.0
+    var animationSpeed: TimeInterval = 0.3
+  }
+  
+  var animations: CLToastAnimations = .init()
+  
+  func reduce(animations: inout CLToastAnimations) {
+    animations[keyPath: \.animationSpeed] = 0.5
+  }
+  
   public init(title: String) {
     self.title = title
   }
