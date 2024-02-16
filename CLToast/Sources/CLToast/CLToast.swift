@@ -2,8 +2,8 @@ import UIKit
 
 public struct CLToast {
   private var layerClient = CLToastViewLayerClient()
-  private var animationManager: any CLToastAnimatable
-  private var viewBuilder: any CLToastViewBuildDelegate
+  private var animationManager: any CLToastUIKitAnimation
+  private var viewBuilder: any CLToastViewBuildable
   
   public let style: CLToastStyle
   public let completion: (() -> Void)?
@@ -14,18 +14,19 @@ public struct CLToast {
   ///   - title: ToastView's title
   ///   - height: ToastView's height, which is used for its ``heightAnchor``.
   ///   - displayDirection: ToastView's Display Direction. You can display toastView from top, bottom and center.
+  ///   - completion: Closure that is called when current toastView has been completely disappeared. You can skip this when you don't have to call any callbacks. ToastView will be removed from parent view when its animation is ended by default.
   public init(
     title: String,
     height: CGFloat,
-    displayDirection: CLToastDisplaySection
+    displayDirection: CLToastDisplaySection,
+    completion: (() -> Void)? = nil
   ) {
     self.style = CLToastStyleBuilder(title)
       .buildValue(\.height, into: height)
-      .buildValue(\.displayFrom, into: displayDirection)
       .buildStyle()
-      
+     
     self.viewBuilder = CLToastViewBuilder(style: style)
-    self.animationManager = CLToastAnimateClient(style: style)
+    self.animationManager = CLToastUIKitAnimationClient()
     self.completion = nil
   }
   
@@ -39,24 +40,26 @@ public struct CLToast {
   ) {
     self.style = style
     self.viewBuilder = CLToastViewBuilder(style: style)
-    self.animationManager = CLToastAnimateClient(style: style)
+    self.animationManager = CLToastUIKitAnimationClient()
     self.completion = completion
   }
   
   /**
    Initialize ``CLToast`` Manager with given parameters. Use this initializer when you want to customize your toastView's appearing and disappearing animation.
    - Parameters:
+     - style: ``CLToastStyle`` which configures toastView's properties like title, description, display Duration, etc.
      - animation: Animation configuring object which conforms ``CLToastAnimatable``.
      - completion: Closure which is called when current toastView has been completely disappeared. You can skip this when you don't have to call any callbacks. ToastView will be removed from parent view when its animation is ended by default.
    
    When you use your own animationManager, you should manage toastView's removal from ``CLToastAnimatable.animate(for:completion:)`` since ``CLToast`` only calls the ``CLToastAnimatable.animate(for:completion:)`` before ``addSubview``.
    */
   public init(
-    animationManager: CLToastAnimatable,
+    with style: CLToastStyle,
+    animation: any CLToastUIKitAnimation,
     completion: (() -> Void)? = nil
   ) {
-    self.animationManager = animationManager
-    self.style = animationManager.style
+    self.animationManager = animation
+    self.style = style
     self.viewBuilder = CLToastViewBuilder(style: style)
     self.completion = completion
   }
@@ -71,14 +74,34 @@ public extension CLToast {
   func present(in view: UIView) {
     guard let toastView = buildToastView(with: style) else { return }
     layerClient.configLayer(for: toastView, with: style)
-    
-    if
-      let completion,
-      style.isAnimationEnabled {
-      animationManager.animate(for: toastView, completion: completion)
+    if let completion { toastView.onDismiss = completion }
+    if animationManager.toastAnimations.isAnimationEnabled {
+      animate(toastView)
       addSubview(toastView, for: view)
     } else {
       Task { await present(in: view, toastView: toastView) }
+    }
+  }
+  
+  func animate(_ toastView: UIView) {
+    if
+      let appearingAnimation = animationManager.makeAnimation() as? UIViewPropertyAnimator,
+      let disappearingAnimation = animationManager.makeAnimation() as? UIViewPropertyAnimator {
+      
+      disappearingAnimation.buildAnimation {
+        animationManager.disappearing(toastView: toastView)
+      }
+      
+      appearingAnimation.buildAnimation {
+        animationManager.appearing(toastView: toastView)
+      }
+      .addCompletion { state in
+        if case .end = state {
+          disappearingAnimation.startAnimation(afterDelay: animationManager.toastAnimations.displayTime)
+        }
+      }
+      
+      appearingAnimation.startAnimation()
     }
   }
 }
@@ -93,13 +116,11 @@ internal extension CLToast {
    - toastView: ToastView which is displayed for ``displayTimeInterval`` long.
    */
   @MainActor
-  private func present(in view: UIView, toastView: UIView) async {
+  private func present(in view: UIView, toastView: CLToastView) async {
     toastView.layer.opacity = 1.0
     addSubview(toastView, for: view)
-    try? await Task.sleep(nanoseconds: UInt64(style.displayTimeInterval * 1_000_000_000))
+    try? await Task.sleep(nanoseconds: UInt64(animationManager.toastAnimations.displayTime * 1_000_000_000))
     toastView.removeFromSuperview()
-    guard let completion else { return }
-    completion()
   }
   
   func addSubview(_ toastView: UIView, for view: UIView) {
@@ -107,15 +128,15 @@ internal extension CLToast {
     configAutoLayout(of: toastView, in: view)
   }
   
-  func buildToastView(with style: CLToastStyle) -> UIView? {
+  func buildToastView(with style: CLToastStyle) -> CLToastView? {
     guard let toastView = viewBuilder.buildToastView() else { return nil }
-    return toastView as? UIView
+    return toastView as? CLToastView
   }
   
   func configAutoLayout(of toastView: UIView, in view: UIView) {
     toastView.translatesAutoresizingMaskIntoConstraints = false
     
-    switch style.displayFrom {
+    switch animationManager.toastAnimations.animateFrom {
     case .top:
       toastView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
     case .bottom:
