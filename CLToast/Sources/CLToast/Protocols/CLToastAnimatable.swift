@@ -13,7 +13,7 @@ public protocol CLToastAnimation {
   func makeAnimation() -> CLAnimationInfo
 }
 
-extension CLToastAnimation {
+internal extension CLToastAnimation {
   func getAnimateOffset() -> CGFloat {
     switch toastAnimations.animateFrom {
     case .top: toastAnimations.offsetY
