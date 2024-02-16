@@ -38,7 +38,7 @@ public extension View {
   func presentToast(
     isPresented: Binding<Bool>,
     with style: CLToastStyle,
-    animate: any CLToastAnimation,
+    animate: any CLToastSwiftUIAnimation,
     onDismiss: (() -> Void)? = nil
   ) -> some View {
     let style = style
