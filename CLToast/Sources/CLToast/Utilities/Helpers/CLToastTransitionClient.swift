@@ -9,12 +9,9 @@ import SwiftUI
 
 public protocol CLToastSwiftUIAnimation: CLToastAnimation {
   func makeTransition() -> AnyTransition
-  var animateFrom: Alignment { get }
 }
 
-struct CLToastTransitionClient: CLToastSwiftUIAnimation {
-  var toastAnimations = CLToastAnimations()
-  
+internal extension CLToastSwiftUIAnimation {
   var animateFrom: Alignment {
     switch toastAnimations.animateFrom {
     case .top: return .top
@@ -22,6 +19,10 @@ struct CLToastTransitionClient: CLToastSwiftUIAnimation {
     case .center: return .center
     }
   }
+}
+
+struct CLToastTransitionClient: CLToastSwiftUIAnimation {
+  var toastAnimations = CLToastAnimations()
   
   func makeTransition() -> AnyTransition {
     AnyTransition
