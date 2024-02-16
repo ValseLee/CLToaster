@@ -6,28 +6,27 @@
 //
 
 import UIKit
-import SwiftUI
 
 public protocol CLToastAnimation {
   associatedtype CLAnimationInfo
-  var animator: (() -> Void)? { get set }
-  func makeAnimation(with style: CLToastStyle) -> CLAnimationInfo
+  var toastAnimations: CLToastAnimations { get }
+  func makeAnimation() -> CLAnimationInfo
 }
 
 extension CLToastAnimation {
-    func getAnimateOffset(from style: CLToastStyle) -> CGFloat {
-      switch style.displayFrom {
-      case .top: style.animateY
-      case .bottom: -style.animateY
-      case .center: style.animateY
-      }
+  func getAnimateOffset() -> CGFloat {
+    switch toastAnimations.animateFrom {
+    case .top: toastAnimations.offsetY
+    case .bottom: -toastAnimations.offsetY
+    case .center: toastAnimations.offsetY
     }
+  }
   
-  func getTransitionOffset(from style: CLToastStyle) -> CGFloat {
-    switch style.displayFrom {
-    case .top: -style.animateY
-    case .bottom: style.animateY
-    case .center: style.animateY
+  func getTransitionOffset() -> CGFloat {
+    switch toastAnimations.animateFrom {
+    case .top: -toastAnimations.offsetY
+    case .bottom: toastAnimations.offsetY
+    case .center: toastAnimations.offsetY
     }
   }
 }
