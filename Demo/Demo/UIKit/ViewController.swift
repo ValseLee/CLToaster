@@ -116,10 +116,13 @@ final class CLToastDemoVC: UIViewController {
   @objc
   private func presentToastWithCustomizeAnimation() {
     var style = CLToastStyle(title: "Title")
-    style.animations.offsetY = 100
-    style.animations.animationSpeed = 0.5
-    CLToast(with: style, animation: MyAnimationManager())
-      .present(in: view)
+    let animation = CLToastAnimations()
+    
+    CLToast(
+      with: style,
+      animation: MyAnimationManager(toastAnimations: animation)
+    )
+    .present(in: view)
   }
   
   @objc
@@ -127,7 +130,6 @@ final class CLToastDemoVC: UIViewController {
     let style = CLToastStyleBuilder("Bottom Toast")
       .buildValue(\.description, into: "Description Here")
       .buildValue(\.timeline, into: Date().formatted())
-      .buildValue(\.animations.animateFrom, into: .bottom)
       .buildStyle()
     
     CLToast(with: style)
@@ -138,17 +140,19 @@ final class CLToastDemoVC: UIViewController {
 }
 
 struct MyAnimationManager: CLToastUIKitAnimation {
-  func appearing(toastView: UIView, with style: CLToastStyle) {
-    toastView.layer.opacity = style.animations.opacity
-    toastView.frame.origin.y += style.animations.offsetY
+  var toastAnimations: CLToastAnimations
+  
+  func appearing(toastView: UIView) {
+    toastView.layer.opacity = toastAnimations.opacity
+    toastView.frame.origin.y += toastAnimations.offsetY
   }
   
-  func disappearing(toastView: UIView, with style: CLToastStyle) {
+  func disappearing(toastView: UIView) {
     toastView.layer.opacity = 0.0
-    toastView.frame.origin.y -= style.animations.offsetY
+    toastView.frame.origin.y -= toastAnimations.offsetY
   }
   
-  func makeAnimation(with style: CLToastStyle) -> UIViewPropertyAnimator {
-    UIViewPropertyAnimator(duration: style.animations.animationSpeed, curve: .easeInOut)
+  func makeAnimation() -> UIViewPropertyAnimator {
+    UIViewPropertyAnimator(duration: toastAnimations.animationSpeed, curve: .easeInOut)
   }
 }
