@@ -7,24 +7,15 @@
 
 import SwiftUI
 
-public struct CLToastViewModifier: ViewModifier {
+struct CLToastViewModifier: ViewModifier {
   @Binding var isPresented: Bool
   @State private var isPresenting: Bool = false
   
-  let animationManager: any CLToastAnimation
+  let animationManager: any CLToastSwiftUIAnimation
   let onDismiss: (() -> Void)?
   let style: CLToastStyle
   
-  var toastPresentSection: Alignment {
-    switch style.displayFrom {
-    case .top: return .top
-    case .bottom: return .bottom
-    case .center: return .center
-    }
-  }
-  
-  // MARK: Initailizer
-  public init(
+  init(
     isPresented: Binding<Bool>,
     style: CLToastStyle,
     onDismiss: (() -> Void)? = nil
@@ -35,12 +26,25 @@ public struct CLToastViewModifier: ViewModifier {
     self.onDismiss = onDismiss
   }
   
+  init(
+    isPresented: Binding<Bool>,
+    style: CLToastStyle,
+    animation: any CLToastSwiftUIAnimation,
+    onDismiss: (() -> Void)? = nil
+  ) {
+    self.style = style
+    self.animationManager = animation
+    self._isPresented = isPresented
+    self.onDismiss = onDismiss
+  }
+  
   // MARK: - Body
-  public func body(content: Content) -> some View {
+  func body(content: Content) -> some View {
     content
       .onChange(of: isPresented) { newValue in
-        if style.isAnimationEnabled {
-          let animation = Animation.easeInOut(duration: style.animateSpeed)
+        if
+          animationManager.toastAnimations.isAnimationEnabled,
+          let animation = animationManager.makeAnimation() as? Animation {
           withAnimation(animation) {
             isPresenting = newValue
           }
@@ -48,7 +52,7 @@ public struct CLToastViewModifier: ViewModifier {
           isPresenting = newValue
         }
       }
-      .overlay(alignment: toastPresentSection) {
+      .overlay(alignment: animationManager.animateFrom) {
         if isPresenting {
           buildToastView()
         }
@@ -56,8 +60,9 @@ public struct CLToastViewModifier: ViewModifier {
   }
   
   private func dismissToast() {
-    if style.isAnimationEnabled {
-      let animation = Animation.easeInOut(duration: style.animateSpeed)
+    if
+      animationManager.toastAnimations.isAnimationEnabled,
+      let animation = animationManager.makeAnimation() as? Animation {
       withAnimation(animation) {
         isPresented = false
         isPresenting = false
@@ -110,7 +115,7 @@ extension CLToastViewModifier: CLToastViewBuildable {
   }
   
   @ViewBuilder
-  public func buildToastView() -> (some View)? {
+  func buildToastView() -> (some View)? {
       ZStack {
         RoundedRectangle(cornerRadius: style.layerCornerRadius)
           .fill(Color(uiColor: style.backgroundColor))
@@ -155,10 +160,12 @@ extension CLToastViewModifier: CLToastViewBuildable {
       .frame(height: style.height)
       .frame(maxWidth: .infinity)
       .padding(.horizontal, 16)
-      .transition(animationManager.makeAnimation(with: style) as! AnyTransition)
+      .transition(animationManager.makeTransition())
       .task {
-        let displayTime = style.displayTimeInterval + style.animateSpeed
-        try? await Task.sleep(nanoseconds: UInt64(displayTime * 1_000_000_000))
+        let displayTime = animationManager.toastAnimations.displayTime + animationManager.toastAnimations.animationSpeed
+        try? await Task.sleep(
+          nanoseconds: UInt64(displayTime * 1_000_000_000)
+        )
         dismissToast()
       }
       .onDisappear {
