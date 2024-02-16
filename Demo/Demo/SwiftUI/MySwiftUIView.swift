@@ -12,9 +12,9 @@ struct MySwiftUIView: View {
   let style = CLToastStyleBuilder("Hi")
     .buildValue(\.description, into: "HIHI")
     .buildValue(\.timeline, into: "Yes")
-    .buildValue(\.animateY, into: 10)
-    .buildValue(\.displayTimeInterval, into: 1)
-    .buildValue(\.animateSpeed, into: 1)
+    .buildValue(\.animations.offsetY, into: 10)
+    .buildValue(\.animations.displayTime, into: 1)
+    .buildValue(\.animations.animationSpeed, into: 1)
     .buildStyle()
   
   @State private var isDefaultToastPresented = false
