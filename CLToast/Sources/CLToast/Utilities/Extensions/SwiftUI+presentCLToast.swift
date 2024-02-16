@@ -32,7 +32,13 @@ public extension View {
       .buildValue(\.height, into: height)
       .buildStyle()
     
-    return modifier(CLToastViewModifier(isPresented: isPresented, style: style, onDismiss: onDismiss))
+    return modifier(
+      CLToastViewModifier(
+        isPresented: isPresented,
+        style: style,
+        onDismiss: onDismiss
+      )
+    )
   }
   
   func presentToast(
@@ -41,8 +47,13 @@ public extension View {
     animate: any CLToastSwiftUIAnimation,
     onDismiss: (() -> Void)? = nil
   ) -> some View {
-    let style = style
-    
-    return modifier(CLToastViewModifier(isPresented: isPresented, style: style, onDismiss: onDismiss))
+    return modifier(
+      CLToastViewModifier(
+        isPresented: isPresented,
+        style: style,
+        animation: animate,
+        onDismiss: onDismiss
+      )
+    )
   }
 }
