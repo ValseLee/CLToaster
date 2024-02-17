@@ -7,9 +7,28 @@
 
 import UIKit
 
-struct CLToastViewBuilder {
+class CLToastView: UIView {
+  var onDismiss: (() -> Void)?
+  
+  init(onDismiss: (() -> Void)? = nil) {
+    super.init(frame: .zero)
+    self.onDismiss = onDismiss
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  override func removeFromSuperview() {
+    super.removeFromSuperview()
+    guard let onDismiss else { return }
+    onDismiss()
+  }
+}
+
+struct CLToastViewBuilder: CLToastViewBuildable {
   var style: CLToastStyle
-  var toastView: UIView = UIView()
+  var toastView = CLToastView()
   
   func buildComponents(
     in section: CLToastViewSection,
@@ -66,12 +85,12 @@ struct CLToastViewBuilder {
     }
   }
   
-  func buildToastView() -> UIView? {
+  func buildToastView() -> CLToastView? {
     buildComponents(in: .title)
-    if let description = style.description { buildComponents(in: .description ) }
-    if let timeline = style.timeline { buildComponents(in: .timeline) }
-    if let image = style.image { buildComponents(in: .image) }
-   
+    if style.description != nil { buildComponents(in: .description ) }
+    if style.timeline != nil { buildComponents(in: .timeline) }
+    if style.image != nil { buildComponents(in: .image) }
+    
     adjustLayouts()
     return toastView
   }

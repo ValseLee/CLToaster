@@ -9,10 +9,10 @@ import CLToast
 import UIKit
 
 final class CLToastDemoVC: UIViewController {
-  var detailedToastPresentButton: UIButton = UIButton()
-  var basicToastPresentButton: UIButton = UIButton()
-  var customizedAnimationToastPresentButton: UIButton = UIButton()
-  var bottomToastPresentButton: UIButton = UIButton()
+  var detailedToastPresentButton = UIButton()
+  var basicToastPresentButton = UIButton()
+  var customizedAnimationToastPresentButton = UIButton()
+  var bottomToastPresentButton = UIButton()
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -115,9 +115,14 @@ final class CLToastDemoVC: UIViewController {
   
   @objc
   private func presentToastWithCustomizeAnimation() {
-    let style = CLToastStyle(title: "Title")
-    CLToast(animationManager: MyAnimationManager(style: style))
-      .present(in: view)
+    var style = CLToastStyle(title: "Title")
+    let animation = CLToastAnimations()
+    
+    CLToast(
+      with: style,
+      animation: MyAnimationManager(toastAnimations: animation)
+    )
+    .present(in: view)
   }
   
   @objc
@@ -125,7 +130,6 @@ final class CLToastDemoVC: UIViewController {
     let style = CLToastStyleBuilder("Bottom Toast")
       .buildValue(\.description, into: "Description Here")
       .buildValue(\.timeline, into: Date().formatted())
-      .buildValue(\.displayFrom, into: .bottom)
       .buildStyle()
     
     CLToast(with: style)
@@ -135,28 +139,20 @@ final class CLToastDemoVC: UIViewController {
   func completionHandler() { print(#function) }
 }
 
-struct MyAnimationManager: CLToastAnimatable {
-  let style: CLToastStyle
+struct MyAnimationManager: CLToastUIKitAnimation {
+  var toastAnimations: CLToastAnimations
   
-  func animate(
-    for view: UIView,
-    completion: @escaping () -> Void
-  ) {
-    UIView.animate(withDuration: style.animateSpeed) {
-      view.layer.opacity = 1.0
-      view.frame.origin.x += 40
-    } completion: { isAnimated in
-      if isAnimated {
-        UIView.animate(
-          withDuration: style.animateSpeed,
-          delay: style.displayTimeInterval
-        ) {
-          view.layer.opacity = 0.0
-          view.frame.origin.y -= style.animateY
-        } completion: { isAnimated in
-          if isAnimated { view.removeFromSuperview() }
-        }
-      }
-    }
+  func appearing(toastView: UIView) {
+    toastView.layer.opacity = toastAnimations.opacity
+    toastView.frame.origin.y += toastAnimations.offsetY
+  }
+  
+  func disappearing(toastView: UIView) {
+    toastView.layer.opacity = 0.0
+    toastView.frame.origin.y -= toastAnimations.offsetY
+  }
+  
+  func makeAnimation() -> UIViewPropertyAnimator {
+    UIViewPropertyAnimator(duration: toastAnimations.animationSpeed, curve: .easeInOut)
   }
 }
