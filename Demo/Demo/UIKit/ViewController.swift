@@ -109,7 +109,7 @@ final class CLToastDemoVC: UIViewController {
   
   @objc
   private func presentBasicToast() {
-    CLToast(title: "Title", height: 50, displayDirection: .top)
+    CLToast(title: "Title", height: 50)
       .present(in: view)
   }
   
