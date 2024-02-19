@@ -11,17 +11,26 @@ struct CLToastViewModifier: ViewModifier {
   @Binding var isPresented: Bool
   @State private var isPresenting: Bool = false
   
-  let animationManager: any CLToastSwiftUIAnimation
+  let transitionManager: any CLToastSwiftUITransition
   let onDismiss: (() -> Void)?
   let style: CLToastStyle
   
+  var alignment: Alignment {
+    switch style.section {
+    case .top: .top
+    case .bottom: .bottom
+    case .center: .center
+    }
+  }
+  
   init(
     isPresented: Binding<Bool>,
     style: CLToastStyle,
     onDismiss: (() -> Void)? = nil
   ) {
     self.style = style
-    self.animationManager = CLToastTransitionClient()
+    let animation = CLToastAnimations()
+    self.transitionManager = CLToastTransitionClient(toastAnimations: animation)
     self._isPresented = isPresented
     self.onDismiss = onDismiss
   }
@@ -29,40 +38,59 @@ struct CLToastViewModifier: ViewModifier {
   init(
     isPresented: Binding<Bool>,
     style: CLToastStyle,
-    animation: any CLToastSwiftUIAnimation,
+    transition: any CLToastSwiftUITransition,
     onDismiss: (() -> Void)? = nil
   ) {
     self.style = style
-    self.animationManager = animation
+    self.transitionManager = transition
     self._isPresented = isPresented
     self.onDismiss = onDismiss
   }
   
-  // MARK: - Body
   func body(content: Content) -> some View {
     content
       .onChange(of: isPresented) { newValue in
-        if
-          animationManager.toastAnimations.isAnimationEnabled,
-          let animation = animationManager.makeAnimation() as? Animation {
-          withAnimation(animation) {
-            isPresenting = newValue
-          }
-        } else {
-          isPresenting = newValue
-        }
+        presentToast(for: newValue)
       }
-      .overlay(alignment: animationManager.animateFrom) {
+      .overlay(alignment: alignment) {
         if isPresenting {
-          buildToastView()
+          CLToastModifiedView(
+            style: style,
+            onDismiss: onDismiss
+          )
+          .transition(
+            .asymmetric(
+              insertion: transitionManager.makeInsertionTransition(for: style),
+              removal: transitionManager.makeRemovalTransition(for: style)
+            )
+          )
+          .task {
+            let displayTime = transitionManager.toastAnimations.displayTime + transitionManager.toastAnimations.animationSpeed
+            try? await Task.sleep(
+              nanoseconds: UInt64(displayTime * 1_000_000_000)
+            )
+            dismissToast()
+          }
         }
+    }
+  }
+  
+  private func presentToast(for isPresented: Bool) {
+    if
+      transitionManager.toastAnimations.isAnimationEnabled,
+      let animation = transitionManager.makeAnimation() as? Animation {
+      withAnimation(animation) {
+        isPresenting = isPresented
       }
+    } else {
+      isPresenting = isPresented
+    }
   }
   
   private func dismissToast() {
     if
-      animationManager.toastAnimations.isAnimationEnabled,
-      let animation = animationManager.makeAnimation() as? Animation {
+      transitionManager.toastAnimations.isAnimationEnabled,
+      let animation = transitionManager.makeAnimation() as? Animation {
       withAnimation(animation) {
         isPresented = false
         isPresenting = false
@@ -74,8 +102,10 @@ struct CLToastViewModifier: ViewModifier {
   }
 }
 
-// MARK: - ViewModifier as ViewBuilder
-extension CLToastViewModifier: CLToastViewBuildable {
+struct CLToastModifiedView: View {
+  let style: CLToastStyle
+  let onDismiss: (() -> Void)?
+  
   private var titleView: some View {
     Text(style.title)
       .foregroundColor(Color(uiColor: .label))
@@ -114,62 +144,53 @@ extension CLToastViewModifier: CLToastViewBuildable {
     } else { nil }
   }
   
-  @ViewBuilder
-  func buildToastView() -> (some View)? {
-      ZStack {
-        RoundedRectangle(cornerRadius: style.layerCornerRadius)
-          .fill(Color(uiColor: style.backgroundColor))
-        
-        if let imageView {
-          HStack(
-            alignment: .center,
-            spacing: 0
-          ) {
-            imageView
-              .frame(
-                width: style.imageSize.width,
-                height: style.imageSize.height
-              )
-              .aspectRatio(contentMode: .fit)
-              .padding(.leading, 16)
-            
-            VStack(spacing: 0) {
-              titleView
-              
-              descriptionView
-            }
-            .padding(.horizontal, 16)
-            
-            Spacer()
-          }
+  var body: some View {
+    ZStack {
+      RoundedRectangle(cornerRadius: style.layerCornerRadius)
+        .fill(Color(uiColor: style.backgroundColor))
+      
+      if let imageView {
+        HStack(
+          alignment: .center,
+          spacing: 0
+        ) {
+          imageView
+            .frame(
+              width: style.imageSize.width,
+              height: style.imageSize.height
+            )
+            .aspectRatio(contentMode: .fit)
+            .padding(.leading, 16)
           
-          timelineView
-          
-        } else {
           VStack(spacing: 0) {
             titleView
             
             descriptionView
           }
-          .frame(maxWidth: .infinity, alignment: .leading)
           .padding(.horizontal, 16)
           
-          timelineView
+          Spacer()
         }
+        
+        timelineView
+        
+      } else {
+        VStack(spacing: 0) {
+          titleView
+          
+          descriptionView
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 16)
+        
+        timelineView
       }
-      .frame(height: style.height)
-      .frame(maxWidth: .infinity)
-      .padding(.horizontal, 16)
-      .transition(animationManager.makeTransition())
-      .task {
-        let displayTime = animationManager.toastAnimations.displayTime + animationManager.toastAnimations.animationSpeed
-        try? await Task.sleep(
-          nanoseconds: UInt64(displayTime * 1_000_000_000)
-        )
-        dismissToast()
-      }
-      .onDisappear {
-        if let onDismiss { onDismiss() }
-      }
+    }
+    .frame(height: style.height)
+    .frame(maxWidth: .infinity)
+    .padding(.horizontal, 16)
+    .onDisappear {
+      if let onDismiss { onDismiss() }
+    }
   }
 }
