@@ -5,7 +5,7 @@
 //  Created by Celan on 2/4/24.
 //
 
-import UIKit
+import Foundation
 
 public protocol CLToastAnimation {
   associatedtype CLAnimationInfo
@@ -14,16 +14,16 @@ public protocol CLToastAnimation {
 }
 
 internal extension CLToastAnimation {
-  func getAnimateOffset() -> CGFloat {
-    switch toastAnimations.animateFrom {
+  func getAnimateOffset(for style: CLToastStyle) -> CGFloat {
+    switch style.section {
     case .top: toastAnimations.offsetY
     case .bottom: -toastAnimations.offsetY
     case .center: toastAnimations.offsetY
     }
   }
   
-  func getTransitionOffset() -> CGFloat {
-    switch toastAnimations.animateFrom {
+  func getTransitionOffset(for style: CLToastStyle) -> CGFloat {
+    switch style.section {
     case .top: -toastAnimations.offsetY
     case .bottom: toastAnimations.offsetY
     case .center: toastAnimations.offsetY

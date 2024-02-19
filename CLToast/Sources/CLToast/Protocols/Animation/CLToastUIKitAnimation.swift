@@ -8,6 +8,6 @@
 import UIKit
 
 public protocol CLToastUIKitAnimation: CLToastAnimation {
-  func appearing(toastView: UIView)
-  func disappearing(toastView: UIView)
+  func makeAppearingAnimation(toastView: UIView, for style: CLToastStyle)
+  func makeDisappearingAnimation(toastView: UIView, for style: CLToastStyle)
 }
