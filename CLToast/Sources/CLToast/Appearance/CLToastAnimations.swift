@@ -17,17 +17,13 @@ public enum CLToastDisplaySection {
 public struct CLToastAnimations {
   /**
    Flag determines ToastView to animate.
-   Its value is ``true`` by default.
+   Default value is ``true``.
    */
   public var isAnimationEnabled = true
   
   /**
-   Display ToastView from given section value.
-   */
-  public var animateFrom: CLToastDisplaySection = .top
-  
-  /**
    Display ToastView for its value.
+   Default value is ``1.0``.
    */
   public var displayTime: TimeInterval = 1.0
   
@@ -36,19 +32,21 @@ public struct CLToastAnimations {
    
    It automatically adjust offset's value depends on ``displayFrom``.
    If ``displayFrom`` is ``.top``, ToastView will animate from top with
-   ``animateY`` value.
-   If ``displayFrom`` is ``.bottom``, ToastViwe will animate from bottom with ``animateY`` value.
+   ``offsetY`` value.
+   If ``displayFrom`` is ``.bottom``, ToastView will animate from bottom with ``offsetY`` value.
    */
   public var offsetY: CGFloat = 40
   
   /**
-   Animate ToastView's opacity with its value.
-   Its value is ``1.0`` by default.
+   Animate ToastView's opacity to this value.
+   If you want to make your toatsView clear, make this value less than 1.0.
+   Default value is ``1.0``.
    */
   public var opacity: Float = 1.0
   
   /**
    Animate ToastView with given speed.
+   Default value is ``0.3``.
    */
   public var animationSpeed: TimeInterval = 0.3
   
