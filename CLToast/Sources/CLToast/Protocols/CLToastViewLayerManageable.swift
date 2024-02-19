@@ -13,7 +13,7 @@ protocol CLToastViewLayerManageable {
 
 struct CLToastViewLayerClient: CLToastViewLayerManageable {
   func configLayer(for view: UIView, with style: CLToastStyle) {
-    view.layer.opacity = style.layerOpacity
+    view.layer.opacity = 0.1
     view.layer.cornerRadius = style.layerCornerRadius
     view.backgroundColor = style.backgroundColor
   }
