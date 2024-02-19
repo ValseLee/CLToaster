@@ -9,27 +9,33 @@ import CLToast
 import SwiftUI
 
 struct MySwiftUIView: View {
+  var body: some View {
+    NavigationStack {
+      MyView()
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle("🚀 CLToast 🚀")
+    }
+  }
+}
+
+struct MyView: View {
   let style = CLToastStyleBuilder("Hi")
     .buildValue(\.description, into: "HIHI")
-    .buildValue(\.timeline, into: "Yes")
+    .buildValue(\.timeline, into: Date().formatted())
+    .buildValue(\.image, into: UIImage(systemName: "hare.fill"))
     .buildStyle()
   
   let animation = CLToastAnimationBuilder()
-    .buildValue(\.offsetY, into: 50)
     .buildValue(\.displayTime, into: 3.0)
-    .buildValue(\.animateFrom, into: .bottom)
     .buildAnimation()
   
   @State private var isDefaultToastPresented = false
+  @State private var isDetailedToastPresented = false
   @State private var isCustomAnimationToastPresented = false
-  @State private var randomColor = [
-    Color.red,
-    Color.yellow,
-    Color.orange
-  ]
+  @State private var isBottomToastPresented = false
   
   var body: some View {
-    ScrollView {
+    VStack(spacing: 20) {
       Button {
         isDefaultToastPresented = true
       } label: {
@@ -37,15 +43,34 @@ struct MySwiftUIView: View {
       }
       
       Button {
+        isDetailedToastPresented = true
+      } label: {
+        Text("detailed")
+      }
+      
+      Button {
         isCustomAnimationToastPresented = true
       } label: {
-        Text("animation")
+        Text("custom animation")
+      }
+      
+      Button {
+        isBottomToastPresented = true
+      } label: {
+        Text("bottom toast")
       }
     }
-    .frame(maxWidth: .infinity)
-    .background { randomColor.randomElement()! }
+    .frame(
+      maxWidth: .infinity,
+      maxHeight: .infinity
+    )
     .presentToast(
       isPresented: $isDefaultToastPresented,
+      with: "title",
+      height: 100
+    )
+    .presentToast(
+      isPresented: $isDetailedToastPresented,
       with: style
     ) {
       print("Dismissed")
@@ -53,29 +78,37 @@ struct MySwiftUIView: View {
     .presentToast(
       isPresented: $isCustomAnimationToastPresented,
       with: style,
-      animate: ToastAnimation(toastAnimations: animation)
+      transition: ToastTransition(toastAnimations: animation)
+    )
+    .presentToast(
+      isPresented: $isBottomToastPresented,
+      with: style,
+      section: .bottom
     )
   }
 }
 
-struct ToastAnimation: CLToastSwiftUIAnimation {
+struct ToastTransition: CLToastSwiftUITransition {
   var toastAnimations: CLToastAnimations
   
   func makeAnimation() -> Animation {
     Animation
-      .easeInOut(duration: toastAnimations.animationSpeed)
+      .bouncy(duration: toastAnimations.animationSpeed)
   }
   
-  func makeTransition() -> AnyTransition {
+  func makeInsertionTransition(for style: CLToastStyle) -> AnyTransition {
     AnyTransition
-      .offset(y: toastAnimations.offsetY)
+      .offset(x: -40)
+      .combined(with: .opacity)
+  }
+  
+  func makeRemovalTransition(for style: CLToastStyle) -> AnyTransition {
+    AnyTransition
+      .offset(x: 40)
       .combined(with: .opacity)
   }
 }
 
 #Preview {
-  NavigationStack {
-    MySwiftUIView()
-      .navigationTitle("Hi")
-  }
+  MySwiftUIView()
 }

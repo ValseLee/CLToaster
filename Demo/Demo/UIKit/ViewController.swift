@@ -16,7 +16,7 @@ final class CLToastDemoVC: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    title = "MAIN"
+    title = "🚀 CLToast 🚀"
     view.backgroundColor = .systemBackground
     
     makeDetailedToastPresentButton()
@@ -115,7 +115,7 @@ final class CLToastDemoVC: UIViewController {
   
   @objc
   private func presentToastWithCustomizeAnimation() {
-    var style = CLToastStyle(title: "Title")
+    let style = CLToastStyle(title: "Title")
     let animation = CLToastAnimations()
     
     CLToast(
@@ -132,7 +132,7 @@ final class CLToastDemoVC: UIViewController {
       .buildValue(\.timeline, into: Date().formatted())
       .buildStyle()
     
-    CLToast(with: style)
+    CLToast(with: style, section: .bottom)
       .present(in: view)
   }
   
@@ -142,14 +142,14 @@ final class CLToastDemoVC: UIViewController {
 struct MyAnimationManager: CLToastUIKitAnimation {
   var toastAnimations: CLToastAnimations
   
-  func appearing(toastView: UIView) {
+  func makeAppearingAnimation(toastView: UIView, for style: CLToastStyle) {
     toastView.layer.opacity = toastAnimations.opacity
-    toastView.frame.origin.y += toastAnimations.offsetY
+    toastView.frame.origin.x += 40
   }
   
-  func disappearing(toastView: UIView) {
+  func makeDisappearingAnimation(toastView: UIView, for style: CLToastStyle) {
     toastView.layer.opacity = 0.0
-    toastView.frame.origin.y -= toastAnimations.offsetY
+    toastView.frame.origin.x += 40
   }
   
   func makeAnimation() -> UIViewPropertyAnimator {
