@@ -9,13 +9,13 @@ import SwiftUI
 
 public extension View {
   /**
-   overlay a ToastView with given parameters.
+   Overlay a ToastView with given parameters.
    
    - Parameters:
-    - isPresented: Bind a ``Bool`` type value to present toastView. You don't have to mutate this value with ``withAnimation`` since the library internally handles transition/animation with ``CLToastStyle`` value.
-    - style: ``CLToastStyle`` which configures toastView's properties like title, description, timeline and radius etc.
-    - section: A value which decides toastView's display section. Default value is ``.top``.
-    - completion: Closure that is called inside ``onDisappear`` closure. You can skip ``completion`` when you don't have to call any callbacks.
+     - isPresented: Bind a ``Bool`` type value to present toastView. You don't have to mutate this value with ``withAnimation`` since the library internally handles transition/animation with ``CLToastStyle`` value.
+     - style: ``CLToastStyle`` which configures toastView's properties like title, description, timeline and radius etc.
+     - section: A value which decides toastView's display section. Default value is ``.top``.
+     - completion: Closure that is called inside ``onDisappear`` closure. You can skip ``completion`` when you don't have to call any callbacks.
    */
   func presentToast(
     isPresented: Binding<Bool>,
@@ -36,13 +36,13 @@ public extension View {
   }
 
   /**
-   overlay a ToastView with given parameters.
+   Overlay a ToastView with given parameters.
    
    - Parameters:
-    - isPresented: Bind a ``Bool`` type value to present toastView. You don't have to mutate this value with ``withAnimation`` since the library internally handles transition/animation with ``CLToastStyle`` value.
-    - title: toastView's title.
-    - height: toastView's height. Default value is ``100``.
-    - completion: Closure that is called inside ``onDisappear`` closure. You can skip ``completion`` when you don't have to call any callbacks.
+     - isPresented: Bind a ``Bool`` type value to present toastView. You don't have to mutate this value with ``withAnimation`` since the library internally handles transition/animation with ``CLToastStyle`` value.
+     - title: toastView's title.
+     - height: toastView's height. Default value is ``100``.
+     - completion: Closure that is called inside ``onDisappear`` closure. You can skip ``completion`` when you don't have to call any callbacks.
    */
   func presentToast(
     isPresented: Binding<Bool>,
@@ -67,11 +67,11 @@ public extension View {
   overlay a ToastView with given parameters.
   
   - Parameters:
-   - isPresented: Bind a ``Bool`` type value to present toastView. You don't have to mutate this value with ``withAnimation`` since the library internally handles transition/animation with ``CLToastStyle`` value.
-   - style: ``CLToastStyle`` which configures toastView's properties like title, description, timeline and radius etc.
-   - transition: Transition configuring struct/class which conforms ``CLToastSwiftUIAnimation``.
-   - section: A value which decides toastView's display section. Default value is ``.top``.
-   - completion: Closure that is called inside ``onDisappear`` closure. You can skip ``completion`` when you don't have to call any callbacks.
+    - isPresented: Bind a ``Bool`` type value to present toastView. You don't have to mutate this value with ``withAnimation`` since the library internally handles transition/animation with ``CLToastStyle`` value.
+    - style: ``CLToastStyle`` which configures toastView's properties like title, description, timeline and radius etc.
+    - transition: Transition configuring struct/class which conforms ``CLToastSwiftUIAnimation``.
+    - section: A value which decides toastView's display section. Default value is ``.top``.
+    - completion: Closure that is called inside ``onDisappear`` closure. You can skip ``completion`` when you don't have to call any callbacks.
    
    If you want to use your own animation, you should manage toastView's animations conforming ``CLToastSwiftUIAnimation`` which asks you to implement ``makeInsertionTransition()`` and ``makeRemovalTransition()``.
    ``CLToast`` configures your transition flow to animate toastView smoothly.

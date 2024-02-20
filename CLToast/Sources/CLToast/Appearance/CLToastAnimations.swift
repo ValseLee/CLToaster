@@ -12,7 +12,8 @@ public enum CLToastDisplaySection {
 }
 
 /**
- - Properties: Animation
+ Initialize ``CLToastAnimations`` when you want to customize your toastView's animation.
+ It is a conformance of ``CLToastUIKitAnimation`` or ``CLToastSwiftUITransition``.
  */
 public struct CLToastAnimations {
   /**

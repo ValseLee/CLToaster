@@ -7,6 +7,12 @@
 
 import UIKit
 
+/**
+ Initialize ``CLToastStyle`` when you want to customize your toast message and toastView's detail information
+ Only Required property is ``title``.
+ 
+ Though You can initialize ``CLToastStyle`` and assign properties from outside, you can make a style with ``CLToastStyleBuilder``.
+ */
 public struct CLToastStyle {
   /**
    Display ToastView from given section value.
@@ -24,7 +30,6 @@ public struct CLToastStyle {
   
   /**
    - Properties: ToastView
-   ToastView title is required.
    */
   
   public var title: String
