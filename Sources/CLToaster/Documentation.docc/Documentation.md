@@ -1,7 +1,7 @@
-# ``CLToast``
+# ``CLToaster``
 
-CLToast is **easy-to-use**, **easy-to-customize** Toast Framework!
-Whether you use UIKit or SwiftUI, ``CLToast`` can be used consistently.
+CLToaster is **easy-to-use**, **easy-to-customize** Toast Framework!
+Whether you use UIKit or SwiftUI, **CLToaster** can be used consistently.
 
 ### Easy-to-use
   - You can simply initialize ``CLToast`` and present.
