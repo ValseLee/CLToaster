@@ -18,7 +18,7 @@ let package = Package(
         .target(
             name: "CLToast",
             dependencies: [],
-            path: "Sources"
+            path: "Sources/CLToast"
         ),
     ]
 )
