@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol CLToastViewBuildable {
+protocol CLToastViewBuildable {
   associatedtype ToastView
   func buildToastView() -> ToastView?
 }

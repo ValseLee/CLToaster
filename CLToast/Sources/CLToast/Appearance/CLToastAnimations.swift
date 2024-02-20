@@ -5,7 +5,7 @@
 //  Created by Celan on 2/16/24.
 //
 
-import UIKit
+import Foundation
 
 public enum CLToastDisplaySection {
   case top, bottom, center

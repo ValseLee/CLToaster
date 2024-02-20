@@ -1,5 +1,5 @@
 //
-//  CLDefaultToastViewSection.swift
+//  CLToastViewSection.swift
 //
 //
 //  Created by Celan on 2/7/24.

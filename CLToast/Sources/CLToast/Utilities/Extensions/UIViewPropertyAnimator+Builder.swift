@@ -1,13 +1,13 @@
 //
-//  File.swift
-//  
+//  UIViewPropertyAnimator+Builder.swift
+//
 //
 //  Created by Celan on 2/13/24.
 //
 
 import UIKit
 
-public extension UIViewPropertyAnimator {
+extension UIViewPropertyAnimator {
   @discardableResult
   func buildAnimation(animation: @escaping () -> Void) -> Self {
     self.addAnimations(animation)
