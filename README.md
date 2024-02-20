@@ -1,9 +1,9 @@
 <p align = "center">
-  <h1 align = "center"> 🌿 CLToast </h1>
+  <h1 align = "center"> 🌿 CLToaster </h1>
 </p>
 
-![License](https://img.shields.io/github/license/valselee/CLToast?label=LICENSE)
-![Release](https://img.shields.io/github/v/release/ValseLee/CLToast?include_prereleases&display_name=tag&logo=swift)
+![License](https://img.shields.io/github/license/valselee/CLToaster?label=LICENSE)
+![Release](https://img.shields.io/github/v/release/ValseLee/CLToaster?include_prereleases&display_name=tag&logo=swift)
 
 <!---
 shield: Swift Package Index, Platforms after deployed
@@ -173,7 +173,7 @@ branch: `main`
 
 ---
 ## Update Roadmap
-> ``CLToast`` is in beta, so it would be updating continuously.
+> ``CLToaster`` is in beta, so it would be updating continuously.
 > And it might take some time to update below items.
 
 |         | View Customize | Animation Customize | Gesture Customize | Apply Queue | 🚏 More |
