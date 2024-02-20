@@ -7,30 +7,23 @@
 
 import SwiftUI
 
-public protocol CLToastSwiftUIAnimation: CLToastAnimation {
-  func makeTransition() -> AnyTransition
-}
-
-internal extension CLToastSwiftUIAnimation {
-  var animateFrom: Alignment {
-    switch toastAnimations.animateFrom {
-    case .top: return .top
-    case .bottom: return .bottom
-    case .center: return .center
-    }
-  }
-}
-
-struct CLToastTransitionClient: CLToastSwiftUIAnimation {
-  var toastAnimations = CLToastAnimations()
+struct CLToastTransitionClient: CLToastSwiftUITransition {
+  var toastAnimations: CLToastAnimations
   
-  func makeTransition() -> AnyTransition {
+  func makeInsertionTransition(for style: CLToastStyle) -> AnyTransition {
     AnyTransition
-      .offset(y: getTransitionOffset())
+      .offset(y: getTransitionOffset(for: style))
+      .combined(with: .opacity)
+  }
+  
+  func makeRemovalTransition(for style: CLToastStyle) -> AnyTransition {
+    AnyTransition
+      .offset(y: getTransitionOffset(for: style))
       .combined(with: .opacity)
   }
   
   func makeAnimation() -> Animation {
-    Animation.easeInOut(duration: toastAnimations.animationSpeed)
+    Animation
+      .easeInOut(duration: toastAnimations.animationSpeed)
   }
 }

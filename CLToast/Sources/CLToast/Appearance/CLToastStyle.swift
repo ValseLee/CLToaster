@@ -7,19 +7,29 @@
 
 import UIKit
 
+/**
+ Initialize ``CLToastStyle`` when you want to customize your toast message and toastView's detail information
+ Only Required property is ``title``.
+ 
+ Though You can initialize ``CLToastStyle`` and assign properties from outside, you can make a style with ``CLToastStyleBuilder``.
+ */
 public struct CLToastStyle {
+  /**
+   Display ToastView from given section value.
+   Default value is ``.top``.
+   */
+  var section: CLToastDisplaySection = .top
+  
   /**
    - Properties: ToastView's Layer & Background
    */
   
-  public var layerOpacity: Float = 0.3
   public var layerCornerRadius: CGFloat = 16
   public var height: CGFloat = 100
   public var backgroundColor: UIColor = .systemGray2
   
   /**
    - Properties: ToastView
-   ToastView title is required.
    */
   
   public var title: String
@@ -28,6 +38,13 @@ public struct CLToastStyle {
   public var image: UIImage?
   public var imageSize: CGSize = CGSize.IconSizes.default
   
+  /**
+   Initialize ``CLToastStyle`` with given title.
+   You can assign values to properties with your own taste.
+   ToastView will be composed with ``CLToastStyle``'s own properties.
+   
+   - Parameter title: Toast Message's main title.
+   */
   public init(title: String) {
     self.title = title
   }

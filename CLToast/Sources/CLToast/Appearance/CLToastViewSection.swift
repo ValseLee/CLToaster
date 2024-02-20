@@ -12,14 +12,10 @@ enum CLToastViewSection {
   
   var identifier: String {
     switch self {
-    case .title:
-      "TITLE"
-    case .description:
-      "DESCRIPTION"
-    case .timeline:
-      "TIMELINE"
-    case .image:
-      "IMAGE"
+    case .title: "TITLE"
+    case .description: "DESCRIPTION"
+    case .timeline: "TIMELINE"
+    case .image: "IMAGE"
     }
   }
 }

@@ -7,22 +7,17 @@
 
 import UIKit
 
-public protocol CLToastUIKitAnimation: CLToastAnimation {
-  func appearing(toastView: UIView)
-  func disappearing(toastView: UIView)
-}
-
 struct CLToastUIKitAnimationClient: CLToastUIKitAnimation {
-  let toastAnimations = CLToastAnimations()
+  let toastAnimations: CLToastAnimations
   
-  func appearing(toastView: UIView) {
+  func makeAppearingAnimation(toastView: UIView, for style: CLToastStyle) {
     toastView.layer.opacity = toastAnimations.opacity
-    toastView.frame.origin.y += getAnimateOffset()
+    toastView.frame.origin.y += getAnimateOffset(for: style)
   }
   
-  func disappearing(toastView: UIView) {
+  func makeDisappearingAnimation(toastView: UIView, for style: CLToastStyle) {
     toastView.layer.opacity = 0
-    toastView.frame.origin.y -= getAnimateOffset()
+    toastView.frame.origin.y -= getAnimateOffset(for: style)
   }
   
   func makeAnimation() -> UIViewPropertyAnimator {
