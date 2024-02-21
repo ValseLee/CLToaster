@@ -21,7 +21,7 @@
       <img alt = "GitHub Release" src = "https://img.shields.io/github/v/release/valselee/cltoaster?include_prereleases&logo=github&label=Release">
     </td>
     <td>
-      <img src = "https://img.shields.io/cocoapods/v/CLToaster"
+      <img src = "https://img.shields.io/cocoapods/v/CLToaster">
     </td>
   </tr>
 </table>
@@ -34,20 +34,36 @@
   </strong>
 </p>
 
+<div align = "center">
+  <img src = "https://github.com/ValseLee/CLToaster/assets/82270058/6c0a709f-8dd0-47bd-9213-21a8f92687af" width = "100%">
+</div>
+
+<hr>
+
 <p align = "center">
-  <h3 align = "center"> Examples! </h2> 
+  <h4 align = "center"> Examples! </h2> 
 </p>
 
 <table align = "center">
   <tr>
-    <th scope="col">Quick Toast</td>
-    <th scope="col">Detailed Toast</td>
-    <th scope="col">Bottom Toast</td>
+    <th scope="col"> Quick Toast </td>
+    <th scope="col"> Detailed Toast </td>
+    <th scope="col"> Custom Animation </td>
+    <th scope="col"> Bottom Toast </td>
   </tr>
   <tr>
-    <td><img src=""> </td>
-    <td><img src=""> </td>
-    <td><img src=""> </td>
+    <td>
+      <img src="">
+    </td>
+    <td>
+      <img src="">
+    </td>
+    <td>
+      <img src="">
+    </td>
+    <td>
+      <img src="">
+    </td>
   </tr>
 </table>
 
