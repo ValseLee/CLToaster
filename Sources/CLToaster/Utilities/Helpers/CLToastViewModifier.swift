@@ -116,7 +116,9 @@ struct CLToastModifiedView: View {
     if let description = style.description {
       Text(description)
         .foregroundColor(Color(uiColor: .label))
+        .lineLimit(2)
         .font(.footnote)
+        .padding(.top, 4)
       
     } else { nil }
   }
@@ -150,10 +152,7 @@ struct CLToastModifiedView: View {
         .fill(Color(uiColor: style.backgroundColor))
       
       if let imageView {
-        HStack(
-          alignment: .center,
-          spacing: 0
-        ) {
+        HStack(alignment: .center, spacing: 0) {
           imageView
             .frame(
               width: style.imageSize.width,
@@ -162,7 +161,7 @@ struct CLToastModifiedView: View {
             .aspectRatio(contentMode: .fit)
             .padding(.leading, 16)
           
-          VStack(spacing: 0) {
+          VStack(alignment: .leading, spacing: 0) {
             titleView
             
             descriptionView
@@ -175,7 +174,7 @@ struct CLToastModifiedView: View {
         timelineView
         
       } else {
-        VStack(spacing: 0) {
+        VStack(alignment: .leading, spacing: 0) {
           titleView
           
           descriptionView
@@ -188,7 +187,8 @@ struct CLToastModifiedView: View {
     }
     .frame(height: style.height)
     .frame(maxWidth: .infinity)
-    .padding(.horizontal, 16)
+    .padding(.horizontal, style.horizontalPadding)
+    .padding(.vertical, style.verticalPadding)
     .onDisappear {
       if let onDismiss { onDismiss() }
     }

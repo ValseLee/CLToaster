@@ -24,6 +24,9 @@ public struct CLToastStyle {
    - Properties: ToastView's Layer & Background
    */
   
+  public var horizontalPadding: CGFloat = 16
+  public var verticalPadding: CGFloat = 8
+  
   public var layerCornerRadius: CGFloat = 16
   public var height: CGFloat = 100
   public var backgroundColor: UIColor = .systemGray2

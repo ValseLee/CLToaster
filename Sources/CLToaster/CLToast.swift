@@ -167,16 +167,16 @@ internal extension CLToast {
     
     switch style.section {
     case .top:
-      toastView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+      toastView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: style.verticalPadding).isActive = true
     case .bottom:
-      toastView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+      toastView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -style.verticalPadding).isActive = true
     case .center:
       toastView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
     
     NSLayoutConstraint.activate([
-      toastView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-      toastView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+      toastView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: style.horizontalPadding),
+      toastView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -style.horizontalPadding),
       toastView.heightAnchor.constraint(equalToConstant: style.height)
     ])
   }
