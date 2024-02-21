@@ -41,12 +41,12 @@ public struct CLToast {
    Initialize ``CLToast`` Manager with given parameters, style and completion handler.
    - Parameters:
     - style: ``CLToastStyle`` which configures toastView's properties like title, description, timeline and radius etc.
-    - section: A value which decides toastView's display section. Default value is ``.top``. You can display toast View from top, bottom and center.
+    - section: A value which decides toastView's display section. Default value is ``.bottom``. You can display toast View from top, bottom and center.
     - completion: Closure that is called when current ToastView has been completely disappeared, right after ``removeFromSuperview()`` been called. You can skip ``completion`` when you don't have to call any callbacks. ToastView will be dismissed when its animation is in ``.end`` state of ``UIViewAnimatingPosition`` by default.
   */
    public init(
     with style: CLToastStyle,
-    section: CLToastDisplaySection = .top,
+    section: CLToastDisplaySection = .bottom,
     completion: (() -> Void)? = nil
   ) {
     var styleCopy = style
@@ -64,7 +64,7 @@ public struct CLToast {
    - Parameters:
     - style: ``CLToastStyle`` which configures toastView's properties like title, description, timeline and radius etc.
     - animation: Animation configuring struct/class which conforms ``CLToastUIKitAnimation``.
-    - section: A value which decides toastView's display section. Default value is ``.top``. You can display toast View from top, bottom and center.
+    - section: A value which decides toastView's display section. Default value is ``.bottom``. You can display toast View from top, bottom and center.
     - completion: Closure that is called when current ToastView has been completely disappeared, right after ``removeFromSuperview()`` been called. You can skip ``completion`` when you don't have to call any callbacks. ToastView will be dismissed when its animation is in ``.end`` state of ``UIViewAnimatingPosition`` by default.
    
    If you want to use your own animation, you should manage toastView's animations conforming ``CLToastUIKitAnimation`` which asks you to implement your custom animations for appearing and disappearing.
@@ -74,7 +74,7 @@ public struct CLToast {
   public init(
     with style: CLToastStyle,
     animation: any CLToastUIKitAnimation,
-    section: CLToastDisplaySection = .top,
+    section: CLToastDisplaySection = .bottom,
     completion: (() -> Void)? = nil
   ) {
     self.animationManager = animation

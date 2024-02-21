@@ -61,10 +61,10 @@ var body: some View {
 
 ```
 
-### Present your toast message from bottom.
+### Present your toast message from top.
 - You can present your toast message from top, center and bottom.
-- ``CLToast`` will present your toast from top by default.
-- in Quick Present, you can't present it from other direction but top.
+- ``CLToast`` will present your toast from bottom by default.
+- in Quick Present, you can't present it from other direction but bottom.
 - Default animation will be automatically adjusted by its presentation section.
 
 ```swift
@@ -74,7 +74,7 @@ style.timeline = Date().formatted()
 style.image = UIImage(named: "MyImage")
 
 // UIKit
-CLToast(with: style, section: .bottom)
+CLToast(with: style, section: .top)
   .present(in: view)
 
 // SwiftUI
@@ -83,7 +83,7 @@ var body: some View {
     .presentToast(
       isPresented: $isPresented,
       with: style,
-      section: .bottom
+      section: .top
     )
 }
 ```
