@@ -5,7 +5,7 @@
 //  Created by Celan on 1/22/24.
 //
 
-import CLToast
+import CLToaster
 import UIKit
 
 final class CLToastDemoVC: UIViewController {
@@ -29,6 +29,22 @@ final class CLToastDemoVC: UIViewController {
     super.viewDidAppear(animated)
   }
   
+  private func makeBasicToastPresentButton () {
+    basicToastPresentButton.setTitle("Quick Toast", for: .normal)
+    basicToastPresentButton.setTitleColor(.systemGreen, for: .normal)
+    
+    view.addSubview(basicToastPresentButton)
+    basicToastPresentButton.addTarget(self, action: #selector(presentQuickToast), for: .touchUpInside)
+    basicToastPresentButton.translatesAutoresizingMaskIntoConstraints = false
+    
+    NSLayoutConstraint.activate([
+      basicToastPresentButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+      basicToastPresentButton.bottomAnchor.constraint(equalTo: detailedToastPresentButton.topAnchor, constant: -20),
+      basicToastPresentButton.heightAnchor.constraint(equalToConstant: 50),
+      basicToastPresentButton.widthAnchor.constraint(equalToConstant: 200),
+    ])
+  }
+  
   private func makeDetailedToastPresentButton() {
     detailedToastPresentButton.setTitle("Detail Toast", for: .normal)
     detailedToastPresentButton.setTitleColor(.systemPink, for: .normal)
@@ -42,22 +58,6 @@ final class CLToastDemoVC: UIViewController {
       detailedToastPresentButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
       detailedToastPresentButton.heightAnchor.constraint(equalToConstant: 50),
       detailedToastPresentButton.widthAnchor.constraint(equalToConstant: 200),
-    ])
-  }
-  
-  private func makeBasicToastPresentButton () {
-    basicToastPresentButton.setTitle("Basic", for: .normal)
-    basicToastPresentButton.setTitleColor(.systemGreen, for: .normal)
-    
-    view.addSubview(basicToastPresentButton)
-    basicToastPresentButton.addTarget(self, action: #selector(presentBasicToast), for: .touchUpInside)
-    basicToastPresentButton.translatesAutoresizingMaskIntoConstraints = false
-    
-    NSLayoutConstraint.activate([
-      basicToastPresentButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      basicToastPresentButton.bottomAnchor.constraint(equalTo: detailedToastPresentButton.topAnchor, constant: -20),
-      basicToastPresentButton.heightAnchor.constraint(equalToConstant: 50),
-      basicToastPresentButton.widthAnchor.constraint(equalToConstant: 200),
     ])
   }
   
@@ -78,7 +78,7 @@ final class CLToastDemoVC: UIViewController {
   }
   
   private func makeBottomToastPresentButton() {
-    bottomToastPresentButton.setTitle("Bottom Toast", for: .normal)
+    bottomToastPresentButton.setTitle("Top Toast", for: .normal)
     bottomToastPresentButton.setTitleColor(.systemBrown, for: .normal)
     
     view.addSubview(bottomToastPresentButton)
@@ -108,8 +108,8 @@ final class CLToastDemoVC: UIViewController {
   }
   
   @objc
-  private func presentBasicToast() {
-    CLToast(title: "Title", height: 50)
+  private func presentQuickToast() {
+    CLToast(title: "Title", height: 100)
       .present(in: view)
   }
   
@@ -127,12 +127,12 @@ final class CLToastDemoVC: UIViewController {
   
   @objc
   private func presentToastFromBottom() {
-    let style = CLToastStyleBuilder("Bottom Toast")
+    let style = CLToastStyleBuilder("Top Toast")
       .buildValue(\.description, into: "Description Here")
       .buildValue(\.timeline, into: Date().formatted())
       .buildStyle()
     
-    CLToast(with: style, section: .bottom)
+    CLToast(with: style, section: .top)
       .present(in: view)
   }
   

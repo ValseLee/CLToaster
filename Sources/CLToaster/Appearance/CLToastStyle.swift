@@ -16,9 +16,9 @@ import UIKit
 public struct CLToastStyle {
   /**
    Display ToastView from given section value.
-   Default value is ``.top``.
+   Default value is ``.bottom``.
    */
-  var section: CLToastDisplaySection = .top
+  var section: CLToastDisplaySection = .bottom
   
   /**
    - Properties: ToastView's Layer & Background
