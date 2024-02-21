@@ -30,17 +30,14 @@ struct CLToastViewBuilder: CLToastViewBuildable {
   var style: CLToastStyle
   var toastView = CLToastView()
   
-  func buildComponents(
-    in section: CLToastViewSection,
-    color: UIColor? = nil
-  ) {
+  func buildComponents(in section: CLToastViewSection) {
     switch section {
     case .title:
       let label = UILabel()
         .configAutoLayout()
         .setTitle(with: style.title)
         .setFont(with: .title3)
-        .setColor(with: color ?? .label)
+        .setColor(with: .label)
         .setIdentifier(with: section.identifier)
       
       toastView.addSubview(label)
@@ -51,11 +48,12 @@ struct CLToastViewBuilder: CLToastViewBuildable {
       let label = UILabel()
         .configAutoLayout()
         .setTitle(with: description)
-        .setColor(with: color ?? .label)
+        .setColor(with: .label)
         .setFont(with: .footnote)
         .setAlignment(to: .left)
         .setIdentifier(with: section.identifier)
       
+      label.numberOfLines = 2
       toastView.addSubview(label)
       configDefaultLayout(view: label, in: section)
       
@@ -65,7 +63,7 @@ struct CLToastViewBuilder: CLToastViewBuildable {
         .configAutoLayout()
         .setAlignment(to: .right)
         .setTitle(with: time)
-        .setColor(with: color ?? .secondaryLabel)
+        .setColor(with: .secondaryLabel)
         .setFont(with: .caption1)
         .setIdentifier(with: section.identifier)
       
@@ -103,16 +101,10 @@ extension CLToastViewBuilder {
   ) {
     switch section {
     case .title:
-      NSLayoutConstraint.activate([
-        view.topAnchor.constraint(equalTo: toastView.topAnchor, constant: 12),
-        view.trailingAnchor.constraint(equalTo: toastView.trailingAnchor, constant: -16),
-      ])
+      view.trailingAnchor.constraint(equalTo: toastView.trailingAnchor, constant: -16).isActive = true
       
     case .description:
       view.trailingAnchor.constraint(equalTo: toastView.trailingAnchor, constant: -16).isActive = true
-      if let titleLabel = getComponent(in: .title) {
-        view.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4).isActive = true
-      }
       
     case .timeline:
       NSLayoutConstraint.activate([
@@ -131,6 +123,23 @@ extension CLToastViewBuilder {
   }
   
   func adjustLayouts() {
+    configTitleLabelCenterYConstraints()
+    configImageViewConstraints()
+  }
+  
+  func configTitleLabelCenterYConstraints() {
+    if
+      let titleLabel = getComponent(in: .title),
+      let descriptionLabel = getComponent(in: .description) {
+      titleLabel.bottomAnchor.constraint(equalTo: toastView.centerYAnchor, constant: -4).isActive = true
+      descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4).isActive = true
+      
+    } else if let titleLabel = getComponent(in: .title) {
+      titleLabel.centerYAnchor.constraint(equalTo: toastView.centerYAnchor).isActive = true
+    }
+  }
+  
+  func configImageViewConstraints() {
     if let imageView = getComponent(in: .image) {
       toastView.subviews.forEach {
         if $0.accessibilityIdentifier == CLToastViewSection.image.identifier { return }
