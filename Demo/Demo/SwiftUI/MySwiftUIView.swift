@@ -5,7 +5,7 @@
 //  Created by Celan on 2/12/24.
 //
 
-import CLToast
+import CLToaster
 import SwiftUI
 
 struct MySwiftUIView: View {
@@ -32,59 +32,76 @@ struct MyView: View {
   @State private var isDefaultToastPresented = false
   @State private var isDetailedToastPresented = false
   @State private var isCustomAnimationToastPresented = false
-  @State private var isBottomToastPresented = false
+  @State private var isTopToastPresented = false
   
   var body: some View {
-    VStack(spacing: 20) {
-      Button {
-        isDefaultToastPresented = true
-      } label: {
-        Text("default")
+    TabView {
+      VStack(spacing: 20) {
+        Button {
+          isDefaultToastPresented = true
+        } label: {
+          Text("Quick Toast")
+        }
+        
+        Button {
+          isDetailedToastPresented = true
+        } label: {
+          Text("Detail Toast")
+        }
+        
+        Button {
+          isCustomAnimationToastPresented = true
+        } label: {
+          Text("Animation Custom")
+        }
+        
+        Button {
+          isTopToastPresented = true
+        } label: {
+          Text("Top toast")
+        }
+      }
+      .frame(
+        maxWidth: .infinity,
+        maxHeight: .infinity
+      )
+      .presentToast(
+        isPresented: $isDefaultToastPresented,
+        with: "title",
+        height: 100
+      )
+      .presentToast(
+        isPresented: $isDetailedToastPresented,
+        with: style
+      ) {
+        print("Dismissed")
+      }
+      .presentToast(
+        isPresented: $isCustomAnimationToastPresented,
+        with: style,
+        transition: ToastTransition(toastAnimations: animation)
+      )
+      .presentToast(
+        isPresented: $isTopToastPresented,
+        with: style,
+        section: .top
+      )
+      .tabViewStyle(.automatic)
+      .tabItem {
+        Label(
+          title: { Text("CLToaster") },
+          icon: { Image(systemName: "circle") }
+        )
       }
       
-      Button {
-        isDetailedToastPresented = true
-      } label: {
-        Text("detailed")
-      }
-      
-      Button {
-        isCustomAnimationToastPresented = true
-      } label: {
-        Text("custom animation")
-      }
-      
-      Button {
-        isBottomToastPresented = true
-      } label: {
-        Text("bottom toast")
-      }
+      VStack { EmptyView() }
+        .tabItem {
+          Label(
+            title: { Text("Demo") },
+            icon: { Image(systemName: "circle") }
+          )
+        }
     }
-    .frame(
-      maxWidth: .infinity,
-      maxHeight: .infinity
-    )
-    .presentToast(
-      isPresented: $isDefaultToastPresented,
-      with: "title",
-      height: 100
-    )
-    .presentToast(
-      isPresented: $isDetailedToastPresented,
-      with: style
-    ) {
-      print("Dismissed")
-    }
-    .presentToast(
-      isPresented: $isCustomAnimationToastPresented,
-      with: style,
-      transition: ToastTransition(toastAnimations: animation)
-    )
-    .presentToast(
-      isPresented: $isBottomToastPresented,
-      with: style,
-      section: .bottom
-    )
   }
 }
 

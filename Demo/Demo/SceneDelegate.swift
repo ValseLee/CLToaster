@@ -16,8 +16,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     window = UIWindow(frame: windowScene.coordinateSpace.bounds)
     window?.windowScene = windowScene
     let demoVC = CLToastDemoVC()
+    demoVC.tabBarItem.image = UIImage(systemName: "circle")
+    
+    let emptyVC = EmptyVC()
+    emptyVC.title = "Demo"
+    emptyVC.tabBarItem.image = UIImage(systemName: "circle")
+    
+    let tab = UITabBarController()
     let nav = UINavigationController(rootViewController: demoVC)
-    window?.rootViewController = nav
+    tab.setViewControllers([nav, emptyVC], animated: false)
+    window?.rootViewController = tab
     window?.makeKeyAndVisible()
   }
 }
