@@ -2,22 +2,54 @@
   <h1 align = "center"> 🌿 CLToaster </h1>
 </p>
 
-![License](https://img.shields.io/github/license/valselee/CLToaster?label=LICENSE)
-![Release](https://img.shields.io/github/v/release/ValseLee/CLToaster?include_prereleases&display_name=tag&logo=swift)
-
-<!---
-shield: Swift Package Index, Platforms after deployed
--->
+<table align = "center">
+  <tr>
+    <td>
+      <a href = "mailto:sollleky72@gmail.com">
+      <img src = "https://img.shields.io/badge/contact-@CelanLee-green.svg?style=flat&label=Contact&logo=gmail">
+      </a>
+    </td>
+    <td>
+      <img alt = "GitHub Repo stars" src = "https://img.shields.io/github/stars/valselee/cltoaster">
+    </td>
+    <td>
+      <img src = "https://img.shields.io/github/license/valselee/CLToaster?label=LICENSE"> </td>
+    <td>
+      <img src = "https://img.shields.io/cocoapods/p/CLToaster?logo=swift&label=Platform">
+    </td>
+    <td>
+      <img alt = "GitHub Release" src = "https://img.shields.io/github/v/release/valselee/cltoaster?include_prereleases&logo=github&label=Release">
+    </td>
+    <td>
+      <img src = "https://img.shields.io/cocoapods/v/CLToaster"
+    </td>
+  </tr>
+</table>
 
 <p align = "center">
-  Swift Library for Presenting Toast Message in UIKit, SwiftUI.
+  Swift Library for Presenting Toast Message in UIKit & SwiftUI
   <br>
-  Easy to Use, Easy to Customize || Convenient and Consistent
+  <strong>
+    Easy to Use, Easy to Customize || Convenient and Consistent
+  </strong>
 </p>
 
-| Quick present | Detailed Toast | Bottom Toast |
-| :---: | :---: | :---: |
-| | | |
+<p align = "center">
+  <h3 align = "center"> Examples! </h2> 
+</p>
+
+<table align = "center">
+  <tr>
+    <th scope="col">Quick Toast</td>
+    <th scope="col">Detailed Toast</td>
+    <th scope="col">Bottom Toast</td>
+  </tr>
+  <tr>
+    <td><img src=""> </td>
+    <td><img src=""> </td>
+    <td><img src=""> </td>
+  </tr>
+</table>
 
 ---
 ### Easy-to-use
@@ -38,7 +70,7 @@ shield: Swift Package Index, Platforms after deployed
 - Whether you use UIKit or SwiftUI, `CLToast` can be used consistently.
 - Follow the examples below.
 
-### Quick present with title and height.
+### Quick Toast with title and height.
 ```swift
 // UIKit
 CLToast(title: "Title", height: 50)
@@ -55,7 +87,7 @@ var body: some View {
 }
 ```
 
-### Presenting detailed toast message with style.
+### Detailed Toast message with style.
 - `CLToastStyle` can be used in UIKit and SwiftUI **equally**.
 - You can make it common style and use it **consistently**.
 
@@ -156,10 +188,9 @@ CLToast(with: style, animation: animationImplementation)
 ---
 
 ## Cocoapods
-- There is another `CLToast` pod with the same name
-- So you have to specify the `git path` like below.
+
 ```ruby
-pod 'CLToast', :git => 'https://github.com/Valselee/CLToast.git', :branch => 'main'
+pod 'CLToaster'
 ```
 
 ## Swift Package Manager
@@ -173,13 +204,13 @@ branch: `main`
 
 ---
 ## Update Roadmap
-> ``CLToaster`` is in beta, so it would be updating continuously.
+> ``CLToaster`` is in beta, so it would be updating continuously. <br>
 > And it might take some time to update below items.
 
 |         | View Customize | Animation Customize | Gesture Customize | Apply Queue | 🚏 More |
 | :---    | :---: | :---: | :---: | :---: | :---: | 
-| UIKit   |  | ✅ |    |   |  |
-| SwiftUI |  |  ✅  |    |   |  | 
+| **UIKit**   |  | ✅ |    |   |  |
+| **SwiftUI** |  |  ✅  |    |   |  | 
 
 ---
 ## It is Opened to everyone, btw.
