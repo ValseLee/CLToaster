@@ -1,5 +1,5 @@
 //
-//  MySwiftUIView.swift
+//  CLSwiftUIView.swift
 //  Demo
 //
 //  Created by Celan on 2/12/24.

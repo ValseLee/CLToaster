@@ -16,7 +16,6 @@ final class CLToastDemoVC: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    title = "🚀 CLToast 🚀"
     view.backgroundColor = .systemBackground
     
     makeDetailedToastPresentButton()
@@ -96,11 +95,11 @@ final class CLToastDemoVC: UIViewController {
   @objc
   private func presentDetailedToast() {
     let style = CLToastStyleBuilder("Title")
-      .buildValue(\.description, into: "Description")
-      .buildValue(\.timeline, into: Date().formatted())
-      .buildValue(\.image, into: UIImage(named: "Logo"))
-      .buildValue(\.height, into: 125)
-      .buildStyle()
+      .assign(\.description, into: "Description")
+      .assign(\.timeline, into: Date().formatted())
+      .assign(\.image, into: UIImage(named: "Logo"))
+      .assign(\.height, into: 125)
+      .build()
     
     CLToast(with: style) { [weak self] in
       self?.completionHandler()
@@ -129,9 +128,9 @@ final class CLToastDemoVC: UIViewController {
   @objc
   private func presentToastFromBottom() {
     let style = CLToastStyleBuilder("Top Toast")
-      .buildValue(\.description, into: "Description Here")
-      .buildValue(\.timeline, into: Date().formatted())
-      .buildStyle()
+      .assign(\.description, into: "Description Here")
+      .assign(\.timeline, into: Date().formatted())
+      .build()
     
     CLToast(with: style, section: .top)
       .present(in: view)

@@ -1,5 +1,5 @@
 //
-//  EmptyVC.swift
+//  SwiftUIController.swift
 //  Demo
 //
 //  Created by Celan on 2/21/24.
@@ -19,8 +19,10 @@ class SwiftUIController: UIViewController {
     view.addSubview(swiftUIView)
     
     NSLayoutConstraint.activate([
-      swiftUIView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      swiftUIView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+      swiftUIView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+      swiftUIView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+      swiftUIView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      swiftUIView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
     ])
     
     vc.didMove(toParent: self)
