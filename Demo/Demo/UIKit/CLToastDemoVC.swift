@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  CLToastDemoVC.swift
 //  Demo
 //
 //  Created by Celan on 1/22/24.
@@ -98,7 +98,8 @@ final class CLToastDemoVC: UIViewController {
     let style = CLToastStyleBuilder("Title")
       .buildValue(\.description, into: "Description")
       .buildValue(\.timeline, into: Date().formatted())
-      .buildValue(\.image, into: .actions)
+      .buildValue(\.image, into: UIImage(named: "Logo"))
+      .buildValue(\.height, into: 125)
       .buildStyle()
     
     CLToast(with: style) { [weak self] in
