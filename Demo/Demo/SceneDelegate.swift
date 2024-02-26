@@ -15,16 +15,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     guard let windowScene = (scene as? UIWindowScene) else { return }
     window = UIWindow(frame: windowScene.coordinateSpace.bounds)
     window?.windowScene = windowScene
-    let demoVC = CLToastDemoVC()
-    demoVC.tabBarItem.image = UIImage(systemName: "circle")
+    let uikitController = CLToastDemoVC()
+    uikitController.title = "UIKit"
+    uikitController.tabBarItem.image = UIImage(systemName: "circle")
     
-    let emptyVC = EmptyVC()
-    emptyVC.title = "Demo"
-    emptyVC.tabBarItem.image = UIImage(systemName: "circle")
+    let swiftUIController = SwiftUIController()
+    swiftUIController.title = "SwiftUI"
+    swiftUIController.tabBarItem.image = UIImage(systemName: "circle")
     
     let tab = UITabBarController()
-    let nav = UINavigationController(rootViewController: demoVC)
-    tab.setViewControllers([nav, emptyVC], animated: false)
+    let uikitNav = UINavigationController(rootViewController: uikitController)
+    let swiftuiNav = UINavigationController(rootViewController: swiftUIController)
+    
+    tab.setViewControllers([uikitNav, swiftuiNav], animated: false)
     window?.rootViewController = tab
     window?.makeKeyAndVisible()
   }
