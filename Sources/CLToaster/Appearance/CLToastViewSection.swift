@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum CLToastViewSection {
+enum CLToastViewSection: CaseIterable {
   case title, description, timeline, image
   
   var identifier: String {

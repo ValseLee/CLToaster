@@ -12,7 +12,7 @@ public class CLToastStyleBuilder {
     self.style = CLToastStyle(title: title)
   }
   
-  public func buildValue<Value>(
+  public func assign<Value>(
     _ path: WritableKeyPath<CLToastStyle,Value>,
     into newValue: Value
   ) -> Self {
@@ -20,5 +20,5 @@ public class CLToastStyleBuilder {
     return self
   }
   
-  public func buildStyle() -> CLToastStyle { style }
+  public func build() -> CLToastStyle { style }
 }
