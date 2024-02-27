@@ -34,8 +34,14 @@
   </strong>
 </p>
 
+<div align = "center">
+  <img width="604" alt="CLToastBanner" src="https://github.com/ValseLee/CLToaster/assets/82270058/c8592669-3c1d-441a-a3c3-c8cc8c2794bc">
+</div>
+
+---
+
 <p align = "center">
-  <h3 align = "center"> Examples! </h2> 
+  <h3 align = "center"> 🧩 Examples! </h2> 
 </p>
 
 <table align = "center">
@@ -45,10 +51,25 @@
     <th scope="col">Animation Customized Toast</td>
     <th scope="col">Top Toast</td>
   </tr>
+<!--   <tr>
+    <td><img width="200" height = "400" src="https://github.com/ValseLee/CLToaster/assets/82270058/463ecc5f-952c-425e-b244-c32a21163adb"> </td>
+    <td><img width="200" height = "400" src="https://github.com/ValseLee/CLToaster/assets/82270058/2363a55d-2ae5-474e-9dfa-a7fc4e4cbdac"> </td>
+    <td><img width="200" height = "400" src="https://github.com/ValseLee/CLToaster/assets/82270058/1cfb0838-120a-4dab-a3c6-9340164ad78b"> </td>
+    <td><img width="200" height = "400" src="https://github.com/ValseLee/CLToaster/assets/82270058/d79af81c-28e5-438e-b222-194de12947ed"> </td>
+  </tr> -->
   <tr>
-    <td><img src=""> </td>
-    <td><img src=""> </td>
-    <td><img src=""> </td>
+    <th>
+      <video src = "https://github.com/ValseLee/CLToaster/assets/82270058/aeb8ab09-08e7-4ebe-8702-912dd19e86e9">
+    </th>
+    <th>
+      <video src = "https://github.com/ValseLee/CLToaster/assets/82270058/a8473c03-3d3c-448e-9f98-fb9184a8ec34">
+    </th>
+    <th>
+      <video src= "https://github.com/ValseLee/CLToaster/assets/82270058/e8e90e87-8f02-49dd-abf1-e32928905aa1"> 
+    </th>
+    <th>
+      <video src = "https://github.com/ValseLee/CLToaster/assets/82270058/81ddf01a-e77e-4c82-a65a-caee3330af3c">
+    </th>
   </tr>
 </table>
 
@@ -90,7 +111,7 @@ var body: some View {
 
 ### Detailed Toast message with style.
 - `CLToastStyle` can be used in UIKit and SwiftUI **equally**.
-- You can make it common style and use it **consistently**.
+- You can make common style and use it consistently in UIKit and SwiftUI.
 
 ```swift
 // Common style
