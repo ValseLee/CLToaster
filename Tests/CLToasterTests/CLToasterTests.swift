@@ -1,7 +1,7 @@
 import XCTest
-@testable import CLToast
+@testable import CLToaster
 
-final class CLToastTests: XCTestCase {
+final class CLToasterTests: XCTestCase {
     func testExample() throws {
         // XCTest Documentation
         // https://developer.apple.com/documentation/xctest

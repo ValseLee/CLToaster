@@ -16,13 +16,16 @@ import UIKit
 public struct CLToastStyle {
   /**
    Display ToastView from given section value.
-   Default value is ``.top``.
+   Default value is ``.bottom``.
    */
-  var section: CLToastDisplaySection = .top
+  var section: CLToastDisplaySection = .bottom
   
   /**
    - Properties: ToastView's Layer & Background
    */
+  
+  public var horizontalPadding: CGFloat = 16
+  public var verticalPadding: CGFloat = 8
   
   public var layerCornerRadius: CGFloat = 16
   public var height: CGFloat = 100

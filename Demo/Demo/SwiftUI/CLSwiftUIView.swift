@@ -1,63 +1,54 @@
 //
-//  MySwiftUIView.swift
+//  CLSwiftUIView.swift
 //  Demo
 //
 //  Created by Celan on 2/12/24.
 //
 
-import CLToast
+import CLToaster
 import SwiftUI
 
-struct MySwiftUIView: View {
-  var body: some View {
-    NavigationStack {
-      MyView()
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle("🚀 CLToast 🚀")
-    }
-  }
-}
-
-struct MyView: View {
-  let style = CLToastStyleBuilder("Hi")
-    .buildValue(\.description, into: "HIHI")
-    .buildValue(\.timeline, into: Date().formatted())
-    .buildValue(\.image, into: UIImage(systemName: "hare.fill"))
-    .buildStyle()
+struct CLSwiftUIView: View {
+  let style = CLToastStyleBuilder("Title")
+    .assign(\.description, into: "Description")
+    .assign(\.timeline, into: Date().formatted())
+    .assign(\.image, into: UIImage(named: "Logo"))
+    .assign(\.height, into: 150)
+    .build()
   
   let animation = CLToastAnimationBuilder()
-    .buildValue(\.displayTime, into: 3.0)
-    .buildAnimation()
+    .assign(\.displayTime, into: 1.5)
+    .build()
   
   @State private var isDefaultToastPresented = false
   @State private var isDetailedToastPresented = false
   @State private var isCustomAnimationToastPresented = false
-  @State private var isBottomToastPresented = false
+  @State private var isTopToastPresented = false
   
   var body: some View {
     VStack(spacing: 20) {
       Button {
         isDefaultToastPresented = true
       } label: {
-        Text("default")
+        Text("Quick Toast")
       }
       
       Button {
         isDetailedToastPresented = true
       } label: {
-        Text("detailed")
+        Text("Detail Toast")
       }
       
       Button {
         isCustomAnimationToastPresented = true
       } label: {
-        Text("custom animation")
+        Text("Animation Custom")
       }
       
       Button {
-        isBottomToastPresented = true
+        isTopToastPresented = true
       } label: {
-        Text("bottom toast")
+        Text("Top Toast")
       }
     }
     .frame(
@@ -66,14 +57,14 @@ struct MyView: View {
     )
     .presentToast(
       isPresented: $isDefaultToastPresented,
-      with: "title",
+      with: "Title",
       height: 100
     )
     .presentToast(
       isPresented: $isDetailedToastPresented,
       with: style
     ) {
-      print("Dismissed")
+      onToastDisappeared()
     }
     .presentToast(
       isPresented: $isCustomAnimationToastPresented,
@@ -81,10 +72,14 @@ struct MyView: View {
       transition: ToastTransition(toastAnimations: animation)
     )
     .presentToast(
-      isPresented: $isBottomToastPresented,
+      isPresented: $isTopToastPresented,
       with: style,
-      section: .bottom
+      section: .top
     )
+  }
+  
+  func onToastDisappeared() {
+    print(#function)
   }
 }
 
@@ -110,5 +105,5 @@ struct ToastTransition: CLToastSwiftUITransition {
 }
 
 #Preview {
-  MySwiftUIView()
+  CLSwiftUIView()
 }
