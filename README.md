@@ -221,7 +221,7 @@ pod 'CLToaster'
 
 ## Swift Package Manager
 ```yml
-Package URL: https://github.com/ValseLee/CLToast/
+Package URL: https://github.com/ValseLee/CLToaster/
 branch: `main`
 ```
 
