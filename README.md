@@ -10,6 +10,10 @@
       </a>
     </td>
     <td>
+      <img alt="Deploy Version" src="https://img.shields.io/badge/iOS-15.0%2B-orange?logo=swift">
+      </a>
+    </td>
+    <td>
       <img alt = "GitHub Repo stars" src = "https://img.shields.io/github/stars/valselee/cltoaster">
     </td>
     <td>
@@ -27,7 +31,7 @@
 </table>
 
 <p align = "center">
-  Swift Library for Presenting Toast Message in UIKit & SwiftUI
+  iOS Library for Presenting Toast Message in UIKit & SwiftUI
   <br>
   <strong>
     Easy to Use, Easy to Customize || Convenient and Consistent
