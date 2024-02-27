@@ -8,15 +8,18 @@ import UIKit
  Also you can customize animation for ``CLToast``.
  */
 public struct CLToast {
-  private var layerClient = CLToastViewLayerClient()
-  private var animationManager: any CLToastUIKitAnimation
-  private var viewBuilder: any CLToastViewBuildable
+  private let layerClient = CLToastViewLayerClient()
+  private let animationManager: any CLToastUIKitAnimation
+  
+  private let viewContainer: CLToastUIViewContainer
   private let style: CLToastStyle
   private let completion: (() -> Void)?
   
   /**
-   Initialize ``CLToast`` Manager with Toast's title, frame height, display Direction.
-   You can call this with basic toast message without a completion handler.
+   Present a ToastView with given parameters.
+   
+   Initialize ``CLToast`` with Toast's title, frame height, display Direction.
+   You can call Quick Toast without a completion handler.
    - Parameters:
      - title: ToastView's title
      - height: ToastView's height, which is used for its heightAnchor.
@@ -28,21 +31,23 @@ public struct CLToast {
     completion: (() -> Void)? = nil
   ) {
     self.style = CLToastStyleBuilder(title)
-      .buildValue(\.height, into: height)
-      .buildStyle()
+      .assign(\.height, into: height)
+      .build()
      
-    self.viewBuilder = CLToastViewBuilder(style: style)
+    self.viewContainer = CLToastUIViewContainer(style: style)
     let animation = CLToastAnimations()
     self.animationManager = CLToastUIKitAnimationClient(toastAnimations: animation)
     self.completion = nil
   }
   
   /**
-   Initialize ``CLToast`` Manager with given parameters, style and completion handler.
+   Present a ToastView with given parameters.
+   
+   Initialize ``CLToast`` with given parameters, style and completion handler.
    - Parameters:
-    - style: ``CLToastStyle`` which configures toastView's properties like title, description, timeline and radius etc.
-    - section: A value which decides toastView's display section. Default value is ``.bottom``. You can display toast View from top, bottom and center.
-    - completion: Closure that is called when current ToastView has been completely disappeared, right after ``removeFromSuperview()`` been called. You can skip ``completion`` when you don't have to call any callbacks. ToastView will be dismissed when its animation is in ``.end`` state of ``UIViewAnimatingPosition`` by default.
+     - style: ``CLToastStyle`` which configures toastView's properties like title, description, timeline and radius etc.
+     - section: A value which decides toastView's display section. Default value is ``.bottom``. You can display toast View from top, bottom and center.
+     - completion: Closure that is called when current ToastView has been completely disappeared, right after ``removeFromSuperview()`` been called. You can skip ``completion`` when you don't have to call any callbacks. ToastView will be dismissed when its animation is in ``.end`` state of ``UIViewAnimatingPosition`` by default.
   */
    public init(
     with style: CLToastStyle,
@@ -53,19 +58,20 @@ public struct CLToast {
     styleCopy.section = section
     self.style = styleCopy
     
-    self.viewBuilder = CLToastViewBuilder(style: styleCopy)
+    self.viewContainer = CLToastUIViewContainer(style: styleCopy)
     let animation = CLToastAnimations()
     self.animationManager = CLToastUIKitAnimationClient(toastAnimations: animation)
     self.completion = completion
   }
   
   /**
-   Initialize ``CLToast`` Manager with given parameters. Use this initializer when you want to customize your toastView's appearing and disappearing animation.
+   Present a ToastView with given parameters.
+   
    - Parameters:
-    - style: ``CLToastStyle`` which configures toastView's properties like title, description, timeline and radius etc.
-    - animation: Animation configuring struct/class which conforms ``CLToastUIKitAnimation``.
-    - section: A value which decides toastView's display section. Default value is ``.bottom``. You can display toast View from top, bottom and center.
-    - completion: Closure that is called when current ToastView has been completely disappeared, right after ``removeFromSuperview()`` been called. You can skip ``completion`` when you don't have to call any callbacks. ToastView will be dismissed when its animation is in ``.end`` state of ``UIViewAnimatingPosition`` by default.
+     - style: ``CLToastStyle`` which configures toastView's properties like title, description, timeline and cornerRadius etc.
+     - animation: Animation configuring struct/class which conforms ``CLToastUIKitAnimation``.
+     - section: A value which decides toastView's display section. Default value is ``.bottom``. You can display toast View from top, bottom and center.
+     - completion: Closure that is called when current ToastView has been completely disappeared, right after ``removeFromSuperview()`` been called. You can skip ``completion`` when you don't have to call any callbacks. ToastView will be dismissed when its animation is in ``.end`` state of ``UIViewAnimatingPosition`` by default.
    
    If you want to use your own animation, you should manage toastView's animations conforming ``CLToastUIKitAnimation`` which asks you to implement your custom animations for appearing and disappearing.
    ``CLToast`` configures your completion and animation flow to animate toastView smoothly.
@@ -82,19 +88,19 @@ public struct CLToast {
     styleCopy.section = section
     self.style = styleCopy
     
-    self.viewBuilder = CLToastViewBuilder(style: styleCopy)
+    self.viewContainer = CLToastUIViewContainer(style: styleCopy)
     self.completion = completion
   }
 }
 
 public extension CLToast {
   /**
-   Present a ToastView with default ToastView built by given style.
+   Present a ToastView with given style.
    Its layout and components are determined by user configured style which is injected when ``CLToast`` has been initialized.
     - Parameter view: Parent view. ToastView will become a subview of this.
    */
   func present(in view: UIView) {
-    guard let toastView = buildToastView(with: style) else { return }
+    let toastView = viewContainer.makeToastView(with: completion)
     layerClient.configLayer(for: toastView, with: style)
     if animationManager.toastAnimations.isAnimationEnabled {
       animate(toastView)
@@ -154,12 +160,6 @@ internal extension CLToast {
   func addSubview(_ toastView: UIView, for view: UIView) {
     view.addSubview(toastView)
     configAutoLayout(of: toastView, in: view)
-  }
-  
-  func buildToastView(with style: CLToastStyle) -> CLToastView? {
-    guard let toastView = viewBuilder.buildToastView() as? CLToastView else { return nil }
-    if let completion { toastView.onDismiss = completion }
-    return toastView
   }
   
   func configAutoLayout(of toastView: UIView, in view: UIView) {

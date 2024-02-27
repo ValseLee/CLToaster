@@ -12,7 +12,7 @@ public class CLToastAnimationBuilder {
     self.animation = CLToastAnimations()
   }
   
-  public func buildValue<Value>(
+  public func assign<Value>(
     _ path: WritableKeyPath<CLToastAnimations,Value>,
     into newValue: Value
   ) -> Self {
@@ -20,5 +20,5 @@ public class CLToastAnimationBuilder {
     return self
   }
   
-  public func buildAnimation() -> CLToastAnimations { animation }
+  public func build() -> CLToastAnimations { animation }
 }

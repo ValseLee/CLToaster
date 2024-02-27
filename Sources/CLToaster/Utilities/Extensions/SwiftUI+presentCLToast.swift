@@ -50,9 +50,8 @@ public extension View {
     height: CGFloat,
     onDismiss: (() -> Void)? = nil
   ) -> some View {
-    let style = CLToastStyleBuilder(title)
-      .buildValue(\.height, into: height)
-      .buildStyle()
+    var style = CLToastStyle(title: title)
+    style.height = height
     
     return modifier(
       CLToastViewModifier(

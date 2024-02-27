@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7E02FEF72B7A632F00D2CD73 /* MySwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E02FEF42B7A632F00D2CD73 /* MySwiftUIView.swift */; };
-		7E02FEF82B7A632F00D2CD73 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E02FEF62B7A632F00D2CD73 /* ViewController.swift */; };
+		7E02FEF72B7A632F00D2CD73 /* CLSwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E02FEF42B7A632F00D2CD73 /* CLSwiftUIView.swift */; };
+		7E02FEF82B7A632F00D2CD73 /* CLToastDemoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E02FEF62B7A632F00D2CD73 /* CLToastDemoVC.swift */; };
 		7EBC3D6D2B85CCF40084D0E6 /* CLToaster in Frameworks */ = {isa = PBXBuildFile; productRef = 7EBC3D6C2B85CCF40084D0E6 /* CLToaster */; };
-		7EBC3D6F2B85D4030084D0E6 /* EmptyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBC3D6E2B85D4030084D0E6 /* EmptyVC.swift */; };
+		7EBC3D6F2B85D4030084D0E6 /* SwiftUIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBC3D6E2B85D4030084D0E6 /* SwiftUIController.swift */; };
 		7ED00ADC2B5E8692006D48D7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED00ADB2B5E8692006D48D7 /* AppDelegate.swift */; };
 		7ED00ADE2B5E8692006D48D7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED00ADD2B5E8692006D48D7 /* SceneDelegate.swift */; };
 		7ED00AE52B5E8692006D48D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7ED00AE42B5E8692006D48D7 /* Assets.xcassets */; };
@@ -18,9 +18,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		7E02FEF42B7A632F00D2CD73 /* MySwiftUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySwiftUIView.swift; sourceTree = "<group>"; };
-		7E02FEF62B7A632F00D2CD73 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		7EBC3D6E2B85D4030084D0E6 /* EmptyVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyVC.swift; sourceTree = "<group>"; };
+		7E02FEF42B7A632F00D2CD73 /* CLSwiftUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CLSwiftUIView.swift; sourceTree = "<group>"; };
+		7E02FEF62B7A632F00D2CD73 /* CLToastDemoVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CLToastDemoVC.swift; sourceTree = "<group>"; };
+		7EBC3D6E2B85D4030084D0E6 /* SwiftUIController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIController.swift; sourceTree = "<group>"; };
 		7ED00AD82B5E8691006D48D7 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7ED00ADB2B5E8692006D48D7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7ED00ADD2B5E8692006D48D7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -44,7 +44,7 @@
 		7E02FEF32B7A632F00D2CD73 /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
-				7E02FEF42B7A632F00D2CD73 /* MySwiftUIView.swift */,
+				7E02FEF42B7A632F00D2CD73 /* CLSwiftUIView.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -52,8 +52,8 @@
 		7E02FEF52B7A632F00D2CD73 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
-				7E02FEF62B7A632F00D2CD73 /* ViewController.swift */,
-				7EBC3D6E2B85D4030084D0E6 /* EmptyVC.swift */,
+				7E02FEF62B7A632F00D2CD73 /* CLToastDemoVC.swift */,
+				7EBC3D6E2B85D4030084D0E6 /* SwiftUIController.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -164,10 +164,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7EBC3D6F2B85D4030084D0E6 /* EmptyVC.swift in Sources */,
-				7E02FEF82B7A632F00D2CD73 /* ViewController.swift in Sources */,
+				7EBC3D6F2B85D4030084D0E6 /* SwiftUIController.swift in Sources */,
+				7E02FEF82B7A632F00D2CD73 /* CLToastDemoVC.swift in Sources */,
 				7ED00ADC2B5E8692006D48D7 /* AppDelegate.swift in Sources */,
-				7E02FEF72B7A632F00D2CD73 /* MySwiftUIView.swift in Sources */,
+				7E02FEF72B7A632F00D2CD73 /* CLSwiftUIView.swift in Sources */,
 				7ED00ADE2B5E8692006D48D7 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
