@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name             = 'CLToaster'
-  spec.version          = '0.0.1-beta'
+  spec.version          = '0.1.0'
   # LICENSE IS NOT FOUND
   spec.license          = { :type => 'MIT' }
   spec.homepage         = 'https://github.com/valselee/CLToaster'
