@@ -170,7 +170,9 @@ extension CLToast {
     if
       let appearingAnimation = animationManager.makeAnimation() as? UIViewPropertyAnimator,
       let disappearingAnimation = animationManager.makeAnimation() as? UIViewPropertyAnimator {
-      let displayTime = DispatchTime.now() + animationManager.toastAnimations.displayTime + animationManager.toastAnimations.animationSpeed
+      let displayTime = DispatchTime.now()
+      + animationManager.toastAnimations.displayTime
+      + animationManager.toastAnimations.animationSpeed
       
       toastView.isUserInteractionEnabled = true
       
