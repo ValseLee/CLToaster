@@ -10,7 +10,7 @@ import UIKit
 public struct CLToast {
   private let layerClient = CLToastViewLayerClient()
   private let animationManager: any CLToastUIKitAnimation
-  private let gestureManager = CLToastUIKitGestureManager()
+  private let gestureManager: any CLToastUIKitTapGesture = CLToastUIKitGestureManager()
   private let viewContainer: CLToastUIViewContainer
   
   private let style: CLToastStyle
