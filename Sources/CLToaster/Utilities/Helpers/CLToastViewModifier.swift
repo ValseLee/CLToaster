@@ -47,6 +47,7 @@ struct CLToastViewModifier: ViewModifier {
     self.onDismiss = onDismiss
   }
   
+  // MARK: - body
   func body(content: Content) -> some View {
     content
       .onChange(of: isPresented) { newValue in
@@ -64,6 +65,9 @@ struct CLToastViewModifier: ViewModifier {
               removal: transitionManager.makeRemovalTransition(for: style)
             )
           )
+          .onTapGesture {
+            dismissToast()
+          }
           .task {
             let displayTime = transitionManager.toastAnimations.displayTime + transitionManager.toastAnimations.animationSpeed
             try? await Task.sleep(
