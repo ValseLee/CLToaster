@@ -18,7 +18,7 @@ public struct CLToastStyle {
    Display ToastView from given section value.
    Default value is ``.bottom``.
    */
-  var section: CLToastDisplaySection = .bottom
+  public var section: CLToastDisplaySection = .bottom
   
   /**
    - Properties: ToastView's Layer & Background
@@ -39,7 +39,7 @@ public struct CLToastStyle {
   public var description: String?
   public var timeline: String?
   public var image: UIImage?
-  public var imageSize: CGSize = CGSize.IconSizes.default
+  public var imageSize: CGSize = CGSize(width: 50, height: 50)
   
   /**
    Initialize ``CLToastStyle`` with given title.
