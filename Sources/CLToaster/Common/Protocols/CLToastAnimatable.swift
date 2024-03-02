@@ -25,7 +25,7 @@ public protocol CLToastAnimation {
   func makeAnimation() -> CLAnimationInfo
 }
 
-internal extension CLToastAnimation {
+public extension CLToastAnimation {
   func getAnimateOffset(for style: CLToastStyle) -> CGFloat {
     switch style.section {
     case .top: toastAnimations.offsetY

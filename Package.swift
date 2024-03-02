@@ -4,21 +4,18 @@
 import PackageDescription
 
 let package = Package(
-    name: "CLToaster",
-    platforms: [.iOS("15.0")],
-    products: [
-        .library(
-            name: "CLToaster",
-            targets: ["CLToaster"]
-        ),
-    ],
-    targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
-        .target(
-            name: "CLToaster",
-            dependencies: [],
-            path: "Sources/CLToaster"
-        ),
-    ]
+  name: "CLToaster",
+  platforms: [.iOS("15.0")],
+  products: [
+    .library(
+      name: "CLToaster",
+      targets: ["CLToaster"]
+    ),
+  ],
+  targets: [
+    .target(
+      name: "CLToaster",
+      dependencies: []
+    )
+  ]
 )

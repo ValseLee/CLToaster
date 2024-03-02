@@ -5,7 +5,7 @@
 //  Created by Celan on 2/10/24.
 //
 
-public class CLToastStyleBuilder {
+public class CLToastStyleBuilder: CLBuilder {
   var style: CLToastStyle
   
   public init(_ title: String) {

@@ -5,7 +5,7 @@
 //  Created by Celan on 2/17/24.
 //
 
-public class CLToastAnimationBuilder {
+public class CLToastAnimationBuilder: CLBuilder {
   var animation: CLToastAnimations
   
   public init() {
