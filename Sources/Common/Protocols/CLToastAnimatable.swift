@@ -5,7 +5,6 @@
 //  Created by Celan on 2/4/24.
 //
 
-import Models
 import Foundation
 
 /**
@@ -20,13 +19,13 @@ import Foundation
  
  ``makeAnimation()`` : Make an animation which is need in both UIKit or SwiftUI. Returns ``CLAnimationInfo``.
 */
-protocol CLToastAnimation {
+public protocol CLToastAnimation {
   associatedtype CLAnimationInfo
   var toastAnimations: CLToastAnimations { get }
   func makeAnimation() -> CLAnimationInfo
 }
 
-extension CLToastAnimation {
+public extension CLToastAnimation {
   func getAnimateOffset(for style: CLToastStyle) -> CGFloat {
     switch style.section {
     case .top: toastAnimations.offsetY

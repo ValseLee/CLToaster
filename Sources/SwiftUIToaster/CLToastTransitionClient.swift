@@ -5,6 +5,7 @@
 //  Created by Celan on 2/13/24.
 //
 
+import Common
 import SwiftUI
 
 struct CLToastTransitionClient: CLToastSwiftUITransition {
