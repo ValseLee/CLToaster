@@ -15,7 +15,7 @@ let package = Package(
   targets: [
     .target(
       name: "CLToaster",
-      dependencies: ["UIKitToaster", "SwiftUIToaster"]
+      dependencies: ["UIKitToaster", "SwiftUIToaster", "Common"]
     ),
     .target(
       name: "UIKitToaster",
