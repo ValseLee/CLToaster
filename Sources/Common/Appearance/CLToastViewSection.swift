@@ -7,10 +7,10 @@
 
 import UIKit
 
-enum CLToastViewSection: CaseIterable {
+public enum CLToastViewSection: CaseIterable {
   case title, description, timeline, image
   
-  var identifier: String {
+  public var identifier: String {
     switch self {
     case .title: "TITLE"
     case .description: "DESCRIPTION"
