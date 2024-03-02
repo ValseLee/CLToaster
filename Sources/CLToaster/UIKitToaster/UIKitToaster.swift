@@ -5,7 +5,6 @@
 //  Created by Celan on 3/1/24.
 //
 
-import Common
 import UIKit
 
 public struct CLToastUIKitData {

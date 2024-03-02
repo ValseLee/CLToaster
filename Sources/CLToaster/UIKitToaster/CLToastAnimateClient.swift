@@ -5,7 +5,6 @@
 //  Created by Celan on 2/13/24.
 //
 
-import Common
 import UIKit
 
 public struct CLToastUIKitAnimationClient: CLToastUIKitAnimation {
