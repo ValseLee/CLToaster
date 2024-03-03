@@ -1,5 +1,11 @@
 import UIKit
 
+protocol UIKitToastService {
+  var data: CLToastUIKitData { get }
+  func getStyle() -> CLToastStyle
+  func getAnimation() -> any CLToastUIKitAnimation
+}
+
 /**
  Toast manager for UIKit.
  
@@ -7,7 +13,7 @@ import UIKit
  You can initialize this struct with ``CLToastStyle`` or simply title and height.
  Also you can customize animation for ``CLToast``.
  */
-public struct CLToast {
+public struct CLToast: UIKitToastService {
   var data: CLToastUIKitData
   
   /**
@@ -84,8 +90,18 @@ public struct CLToast {
     )
   }
   
+  func getStyle() -> CLToastStyle {
+    data.style
+  }
+  
+  func getAnimation() -> any CLToastUIKitAnimation {
+    data.animation
+  }
+  
   public func present(in view: UIView) {
-    UIKitToaster(data: data)
-      .present(in: view)
+    let toastView = CLToastView()
+    let presenter = CLToastUIKitPresenter(service: self, toastView: toastView)
+    
+    presenter.present(in: view)
   }
 }
