@@ -11,52 +11,6 @@ protocol CLToastViewDelegate: UIView {
   func makeView(with style: CLToastStyle)
 }
 
-class CLToastTitleLabel: UILabel {
-  func config(with title: String) {
-    self
-      .configAutoLayout()
-      .setTitle(with: title)
-      .setFont(with: .title2)
-      .setColor(with: .label)
-      .setIdentifier(with: title)
-  }
-}
-
-class CLToastDescriptionLabel: UILabel {
-  func config(with description: String) {
-    self
-      .configAutoLayout()
-      .setTitle(with: description)
-      .setColor(with: .label)
-      .setFont(with: .footnote)
-      .setAlignment(to: .left)
-      .setIdentifier(with: description)
-    
-    numberOfLines = 2
-  }
-}
-
-class CLToastTimelineLabel: UILabel {
-  func config(with timeline: String) {
-    self
-      .configAutoLayout()
-      .setAlignment(to: .right)
-      .setTitle(with: timeline)
-      .setColor(with: .secondaryLabel)
-      .setFont(with: .caption1)
-  }
-}
-
-class CLToastImageView: UIImageView {
-  func config(with image: UIImage) {
-    self
-      .configAutoLayout()
-      .setImage(with: image)
-      .setIdentifier(with: image.description)
-    contentMode = .scaleAspectFit
-  }
-}
-
 class CLToastView: UIView, CLToastViewDelegate {
   var titleLabel = CLToastTitleLabel()
   var descriptionLabel = CLToastDescriptionLabel()
@@ -157,3 +111,50 @@ extension CLToastView {
     ])
   }
 }
+
+class CLToastTitleLabel: UILabel {
+  func config(with title: String) {
+    self
+      .configAutoLayout()
+      .setTitle(with: title)
+      .setFont(with: .title2)
+      .setColor(with: .label)
+      .setIdentifier(with: title)
+  }
+}
+
+class CLToastDescriptionLabel: UILabel {
+  func config(with description: String) {
+    self
+      .configAutoLayout()
+      .setTitle(with: description)
+      .setColor(with: .label)
+      .setFont(with: .footnote)
+      .setAlignment(to: .left)
+      .setIdentifier(with: description)
+    
+    numberOfLines = 2
+  }
+}
+
+class CLToastTimelineLabel: UILabel {
+  func config(with timeline: String) {
+    self
+      .configAutoLayout()
+      .setAlignment(to: .right)
+      .setTitle(with: timeline)
+      .setColor(with: .secondaryLabel)
+      .setFont(with: .caption1)
+  }
+}
+
+class CLToastImageView: UIImageView {
+  func config(with image: UIImage) {
+    self
+      .configAutoLayout()
+      .setImage(with: image)
+      .setIdentifier(with: image.description)
+    contentMode = .scaleAspectFit
+  }
+}
+
