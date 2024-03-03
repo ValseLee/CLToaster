@@ -13,6 +13,7 @@ protocol UIKitToastAnimator {
   func animate(_ toastView: UIView, with style: CLToastStyle)
 }
 
+// Internal Animator
 struct CLToastUIKitAnimator: UIKitToastAnimator {
   var animation: any CLToastUIKitAnimation
   var gesture: any CLToastUIKitTapGesture

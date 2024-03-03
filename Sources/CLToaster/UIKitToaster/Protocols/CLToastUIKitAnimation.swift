@@ -75,3 +75,29 @@ public protocol CLToastUIKitAnimation: CLToastAnimation {
    */
   func makeDisappearingAnimation(toastView: UIView, for style: CLToastStyle)
 }
+
+// Internal Client
+struct CLToastUIKitAnimationClient: CLToastUIKitAnimation {
+  let toastAnimations: CLToastAnimations
+  
+  init(toastAnimations: CLToastAnimations) {
+    self.toastAnimations = toastAnimations
+  }
+  
+  func makeAppearingAnimation(toastView: UIView, for style: CLToastStyle) {
+    toastView.layer.opacity = toastAnimations.opacity
+    toastView.frame.origin.y += getAnimateOffset(for: style)
+  }
+  
+  func makeDisappearingAnimation(toastView: UIView, for style: CLToastStyle) {
+    toastView.layer.opacity = 0
+    toastView.frame.origin.y -= getAnimateOffset(for: style)
+  }
+  
+  func makeAnimation() -> UIViewPropertyAnimator {
+    UIViewPropertyAnimator(
+      duration: toastAnimations.animationSpeed,
+      curve: .easeInOut
+    )
+  }
+}
