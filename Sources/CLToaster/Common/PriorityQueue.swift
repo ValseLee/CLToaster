@@ -173,34 +173,30 @@ public struct PriorityQueue<T: Comparable> {
 }
 
 // MARK: - swim and sink
-
-//extension PriorityQueue {
-//  private mutating func sink(_ index: Int) {
-//    var index = index
-//    while 2 * index + 1 < heap.count {
-//      var j = 2 * index + 1
-//      print(#function, "SINK START", "J", j, "IDX", index)
-//      
-//      // 배열의 끝에 접근하지 않도록 주의 + child 중에 누가 더 큰지(최대힙) 비교
-//      // 만약 오른쪽 녀석이 더 크다면 j 인덱스에 1을 더해준다(더 큰 쪽이 부모가 되어야 하기 때문)
-//      if j < (heap.count - 1), ordered(heap[j], heap[j + 1]) { j += 1 }
-//      // 만약 현재 노드가 자식보다 크다면(최대힙) 멈춘다.
-//      if !ordered(heap[index], heap[j]) { break }
-//      print(#function, "SINK END", "J", j, "IDX", index)
-//      heap.swapAt(index, j)
-//      index = j
-//    }
-//  }
-//  
-//  
-//  private mutating func swim(_ index: Int) {
-//    var index = index
-//    
-//    while index > 0, ordered(heap[(index - 1) / 2], heap[index]) {
-//      print(#function, "SWIM START", "IDX", index)
-//      heap.swapAt((index - 1) / 2, index)
-//      index = (index - 1) / 2
-//      print(#function, "SWIM END", "IDX", index)
-//    }
-//  }
-//}
+extension PriorityQueue {
+  mutating func sink(_ index: Int) {
+    var index = index
+    
+    while index * 2 + 1 < heap.count {
+      var childIndex = index * 2 + 1
+      if
+        childIndex < (heap.count - 1),
+        ordered(heap[childIndex], heap[childIndex + 1]) { childIndex += 1 }
+      
+      if !ordered(heap[index], heap[childIndex]) { break }
+      heap.swapAt(index, childIndex)
+      index = childIndex
+    }
+  }
+  
+  mutating func swim(_ index: Int) {
+    var index = index
+    let parent = heap[(index - 1) / 2]
+    let currentNode = heap[index]
+    
+    while index > 0, ordered(parent, currentNode) {
+      heap.swapAt((index - 1) / 2, index)
+      index = (index - 1) / 2
+    }
+  }
+}
