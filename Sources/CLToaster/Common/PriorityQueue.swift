@@ -31,7 +31,7 @@ public struct PriorityQueue<T: Comparable> {
   mutating func clear() { heap.removeAll() }
   
   // MARK: - Lifecycle
-  /// Creates a new PriorityQueue with the given custom ordering function.
+  /// Creates a new Priority Queue with the given custom ordering function.
   ///
   /// - Parameters:
   ///   - order: A function that specifies whether its first argument should come after the second argument in the Priority Queue. Giving `<` means Max Heap, otherwise Min Heap.
@@ -43,11 +43,11 @@ public struct PriorityQueue<T: Comparable> {
     self.ordered = order
     self.heap = startingValues
     
-    var midIndex = heap.count / 2 - 1
+    var parentIndex = heap.count / 2 - 1
     
-    while midIndex >= 0 {
-      sink(midIndex)
-      midIndex -= 1
+    while parentIndex >= 0 {
+      sink(parentIndex)
+      parentIndex -= 1
     }
   }
   
@@ -110,14 +110,13 @@ public struct PriorityQueue<T: Comparable> {
   /// ## Example
   ///
   /// ```plain
-  /// given: heap = [1,2,3,4,5] | remove 3 | index == 2
+  /// Given: heap = [1,2,3,4,5] | remove 3 | index == 2
   /// heap[idx] goes to last position (swapAt)
   /// and pops (removeLast) then rearrange the Pritority Queue.
   /// If you removed the last item, swim doesn't get called.
   /// ```
   mutating func remove(_ item: T) {
     if let index = heap.firstIndex(of: item) {
-      
       heap.swapAt(index, heap.count - 1)
       heap.removeLast()
       
@@ -164,33 +163,44 @@ public struct PriorityQueue<T: Comparable> {
       }
     }
   }
+  
+  mutating func removeMax() -> T? {
+    let max = heap[0]
+    heap.swapAt(0, heap.count - 1)
+    sink(0)
+    return max
+  }
 }
 
 // MARK: - swim and sink
-extension PriorityQueue {
-  private mutating func sink(_ index: Int) {
-    var index = index
-    while 2 * index + 1 < heap.count {
-      var j = 2 * index + 1
-      print(#function, "SINK START", "J", j, "IDX", index)
-      
-      if j < (heap.count - 1) && ordered(heap[j], heap[j + 1]) { j += 1 }
-      if !ordered(heap[index], heap[j]) { break }
-      print(#function, "SINK END", "J", j, "IDX", index)
-      heap.swapAt(index, j)
-      index = j
-    }
-  }
-  
-  
-  private mutating func swim(_ index: Int) {
-    var index = index
-    
-    while index > 0 && ordered(heap[(index - 1) / 2], heap[index]) {
-      print(#function, "SWIM START", "IDX", index)
-      heap.swapAt((index - 1) / 2, index)
-      index = (index - 1) / 2
-      print(#function, "SWIM END", "IDX", index)
-    }
-  }
-}
+
+//extension PriorityQueue {
+//  private mutating func sink(_ index: Int) {
+//    var index = index
+//    while 2 * index + 1 < heap.count {
+//      var j = 2 * index + 1
+//      print(#function, "SINK START", "J", j, "IDX", index)
+//      
+//      // 배열의 끝에 접근하지 않도록 주의 + child 중에 누가 더 큰지(최대힙) 비교
+//      // 만약 오른쪽 녀석이 더 크다면 j 인덱스에 1을 더해준다(더 큰 쪽이 부모가 되어야 하기 때문)
+//      if j < (heap.count - 1), ordered(heap[j], heap[j + 1]) { j += 1 }
+//      // 만약 현재 노드가 자식보다 크다면(최대힙) 멈춘다.
+//      if !ordered(heap[index], heap[j]) { break }
+//      print(#function, "SINK END", "J", j, "IDX", index)
+//      heap.swapAt(index, j)
+//      index = j
+//    }
+//  }
+//  
+//  
+//  private mutating func swim(_ index: Int) {
+//    var index = index
+//    
+//    while index > 0, ordered(heap[(index - 1) / 2], heap[index]) {
+//      print(#function, "SWIM START", "IDX", index)
+//      heap.swapAt((index - 1) / 2, index)
+//      index = (index - 1) / 2
+//      print(#function, "SWIM END", "IDX", index)
+//    }
+//  }
+//}
